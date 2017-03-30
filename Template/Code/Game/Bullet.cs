@@ -17,7 +17,8 @@ namespace Template.Game
             this.player = player;
             GM.engineM.AddSprite(this);
             Frame.Define(Tex.SingleWhitePixel);
-            ScaleBoth = 6;
+            SX = 3;
+            SY = 24;
 
             //get player attributes
             Wash = player.Wash;
@@ -56,19 +57,28 @@ namespace Template.Game
         private void Hit(Sprite hit)
         {
             if (hit is Bullet)
-                CollisionAbandonResponse = true;
-
-            if (hit is Player)
             {
-                //don't shoot yourself
-                if (player != hit)
-                {
-                    hit.Kill();
-                    Kill();
-                    MessageBus.Instance.BroadcastMessage(ExtraMessageTypes.PlayerDestroyed, hit);
-                }
-                else CollisionAbandonResponse = true;
+                CollisionAbandonResponse = true;
             }
+            else
+                if (hit is Player)
+                {
+                    //don't shoot yourself
+                    if (player != hit)
+                    {
+                        hit.Kill();
+                        Kill();
+                        MessageBus.Instance.BroadcastMessage(ExtraMessageTypes.PlayerDestroyed, hit);
+                    }
+                    else
+                    {
+                        CollisionAbandonResponse = true;
+                    }
+                }
+                else
+                {
+                    //Flip sprite along normal when hitting anything else
+                }
         }
     }
 }
