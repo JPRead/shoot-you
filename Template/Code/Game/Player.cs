@@ -142,24 +142,6 @@ namespace Template.Game
 
             //For firing:
             
-            //Vector3 bulletAngle = new Vector3(0f, 0f, 0f);
-
-            //if (GM.inputM.KeyDown(AimUp))
-            //{
-            //    bulletAngle += Vector3.Up;
-            //}
-            //if (GM.inputM.KeyDown(AimRight))
-            //{
-            //    bulletAngle += Vector3.Right;
-            //}
-            //if (GM.inputM.KeyDown(AimDown))
-            //{
-            //    bulletAngle += Vector3.Down;
-            //}
-            //if (GM.inputM.KeyDown(AimLeft))
-            //{
-            //    bulletAngle += Vector3.Left;
-            //}
             if ((GM.inputM.KeyDown(Shoot) || GM.inputM.MouseLeftButtonHeld()) && GM.eventM.Elapsed(tiShootCooldown))
             {
                 Vector2 fireAngle = GM.inputM.MouseLocation;
