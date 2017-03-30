@@ -19,10 +19,6 @@ namespace Template.Game
         private float boostX;
         private float boostY;
         private Event tiShootCooldown;
-        private Keys AimUp;
-        private Keys AimRight;
-        private Keys AimDown;
-        private Keys AimLeft;
 
         public Player(Vector2 startPos, Color col)
         {
@@ -164,7 +160,7 @@ namespace Template.Game
             //{
             //    bulletAngle += Vector3.Left;
             //}
-            if (GM.inputM.KeyDown(Shoot) && GM.eventM.Elapsed(tiShootCooldown))
+            if ((GM.inputM.KeyDown(Shoot) || GM.inputM.MouseLeftButtonHeld()) && GM.eventM.Elapsed(tiShootCooldown))
             {
                 Vector2 fireAngle = GM.inputM.MouseLocation;
                 //create bullet and pass reference to player and angle
