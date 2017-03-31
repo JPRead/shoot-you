@@ -115,6 +115,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game\Bullet.cs" />
+    <Compile Include="Game\Enemy.cs" />
     <Compile Include="Game\Player.cs" />
     <Compile Include="Game\PlayerOne.cs" />
     <Compile Include="Game\PlayerTwo.cs" />

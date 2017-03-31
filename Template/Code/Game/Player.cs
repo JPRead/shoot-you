@@ -19,9 +19,26 @@ namespace Template.Game
         private float boostX;
         private float boostY;
         private Event tiShootCooldown;
+        private int health;
+
+        public int Health
+        {
+            get
+            {
+                return health;
+            }
+
+            set
+            {
+                health = value;
+            }
+        }
 
         public Player(Vector2 startPos, Color col)
         {
+            //Set health
+            Health = 100;
+
             //set management of sprite and graphic
             GM.engineM.AddSprite(this);
             Frame.Define(Tex.Triangle);

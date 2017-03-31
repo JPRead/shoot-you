@@ -66,15 +66,16 @@ namespace Template.Game
                 //don't shoot yourself
                 if (player != hit)
                 {
-                        hit.Kill();
-                        Kill();
-                        MessageBus.Instance.BroadcastMessage(ExtraMessageTypes.PlayerDestroyed, hit);
+                    hit.Kill();
+                    Kill();
+                    MessageBus.Instance.BroadcastMessage(ExtraMessageTypes.PlayerDestroyed, hit);
                 }
                 else
                 {
                     CollisionAbandonResponse = true;
                 }
             }
+            
         }
         private void AfterHit(Sprite hit)
         {
