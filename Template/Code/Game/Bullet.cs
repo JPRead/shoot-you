@@ -43,6 +43,7 @@ namespace Template.Game
             CollisionActive = true;
             CollisionPrimary = true;
             PrologueCallBack += Hit;
+            EpilogueCallBack += AfterHit;
             Moving = true;
 
             //kill after 5 seconds
@@ -60,25 +61,24 @@ namespace Template.Game
             {
                 CollisionAbandonResponse = true;
             }
-            else
-                if (hit is Player)
+            if (hit is Player)
+            {
+                //don't shoot yourself
+                if (player != hit)
                 {
-                    //don't shoot yourself
-                    if (player != hit)
-                    {
                         hit.Kill();
                         Kill();
                         MessageBus.Instance.BroadcastMessage(ExtraMessageTypes.PlayerDestroyed, hit);
-                    }
-                    else
-                    {
-                        CollisionAbandonResponse = true;
-                    }
                 }
                 else
                 {
-                    //Flip sprite along normal when hitting anything else
+                    CollisionAbandonResponse = true;
                 }
+            }
+        }
+        private void AfterHit(Sprite hit)
+        {
+            RotationHelper.FaceVelocity(this, DirectionAccuracy.free, false, 0f);
         }
     }
 }
