@@ -70,7 +70,7 @@ namespace Template.Game
             EpilogueCallBack += Stop;
 
             //Start a shooting timer
-            GM.eventM.AddTimer(tiShootCooldown = new Event(0.25f, "Shoot Cooldown"));
+            GM.eventM.AddTimer(tiShootCooldown = new Event(0.1f, "Shoot Cooldown"));
 
             
         }
@@ -171,7 +171,6 @@ namespace Template.Game
                 if (tiBoostDelay == null)
                     GM.eventM.AddTimer(tiBoostDelay = new Event(0.5f, "dodge delay"));
 
-                //Vector3 b = RotationHelper.MyDirection(this, 0);
                 Vector3 b = Velocity;
                 Velocity += b * 2;
             }

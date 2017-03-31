@@ -14,7 +14,7 @@ namespace Template.Game
         /// create a new player one and set its keys
         /// </summary>
         public PlayerOne()
-            :base(new Vector2(1000, GM.screenSize.Center.Y), Color.Red)
+            :base(new Vector2(1000, GM.screenSize.Center.Y), Color.LimeGreen)
         {
             SetKeys(Keys.A,Keys.D,Keys.W,Keys.S,Keys.LeftControl,Keys.Space);
             SetBoot(100, GM.screenSize.Bottom - 50);

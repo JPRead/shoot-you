@@ -28,6 +28,9 @@ namespace Template.Game
             //create players and generate level layout
             new PlayerOne();
 
+            //Remove when enemy generation implemented
+            new ChargerEnemy(new Vector2(100, 100));
+
             //Create cursor and places centre on mouse position
             Cursor cursor = new Cursor();
 
@@ -46,9 +49,7 @@ namespace Template.Game
         /// </summary>
         private void GenerateLevel()
         {
-            new wall(GM.screenSize.Center.X - 15, 200, 30, 300);
-            new wall(120, GM.screenSize.Center.Y - 50, 30, 100);
-            new wall(GM.screenSize.Right - 120, GM.screenSize.Center.Y - 50, 30, 100);
+            new wall(GM.screenSize.Center.X - 20, GM.screenSize.Center.Y - 200, 40, 400);
         }
 
         /// <summary>

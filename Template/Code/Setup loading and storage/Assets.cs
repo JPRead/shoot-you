@@ -37,7 +37,7 @@ namespace Template
         /// <summary>
         /// reference to screen size - smaller is better as this will be quickler
         /// </summary>
-        public static Rectangle screenSize = new Rectangle(0, 0, 1280, 720);
+        public static Rectangle screenSize = new Rectangle(0, 0, 1600, 900);
         /// <summary>
         /// holds scores
         /// </summary>

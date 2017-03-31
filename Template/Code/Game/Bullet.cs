@@ -8,6 +8,19 @@ namespace Template.Game
     {
         private Player player;
 
+        internal Player Player
+        {
+            get
+            {
+                return player;
+            }
+
+            //set
+            //{
+            //    player = value;
+            //}
+        }
+
         public Bullet(Player player, Vector2 fireAngle)
         {
             //Bullet won't collide with player
@@ -72,7 +85,17 @@ namespace Template.Game
                 }
                 else
                 {
-                    CollisionAbandonResponse = true;
+                    //CollisionAbandonResponse = true;
+                }
+            }
+            if(hit is Enemy)
+            {
+                Enemy enemy = (Enemy)hit;
+                enemy.Health -= 10;
+                Kill();
+                if (enemy.Health <= 0)
+                {
+                    enemy.Kill();
                 }
             }
             
