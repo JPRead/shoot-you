@@ -20,6 +20,8 @@ namespace Template.Game
         private float boostY;
         private Event tiShootCooldown;
         private int health;
+        private Sprite gunSprite;
+        private Sprite directionSprite;
 
         public int Health
         {
@@ -36,17 +38,33 @@ namespace Template.Game
 
         public Player(Vector2 startPos, Color col)
         {
+            //Creating gun sprite
+            gunSprite = new Sprite();
+            GM.engineM.AddSprite(gunSprite);
+            gunSprite.Frame.Define(Tex.Rectangle50by50);
+            gunSprite.Wash = col;
+            gunSprite.SX = 0.1f;
+            gunSprite.SY = 0.75f;
+
+            //Creating direction sprite
+            directionSprite = new Sprite();
+            GM.engineM.AddSprite(directionSprite);
+            directionSprite.Frame.Define(Tex.Triangle);
+            directionSprite.Wash = col;
+            directionSprite.SX = 0.5f;
+            directionSprite.SY = 0.5f;
+
             //Set health
             Health = 100;
 
             //set management of sprite and graphic
             GM.engineM.AddSprite(this);
-            Frame.Define(Tex.Triangle);
+            Frame.Define(Tex.Circle32by32);
 
             //set position and colour
             Position2D = startPos;
             Wash = col;
-            SY = 1.25f;
+            //SY = 1.25f;
 
             //setup controls
             UpdateCallBack += Move;
@@ -136,14 +154,18 @@ namespace Template.Game
         /// </summary>
         private void Move()
         {
+            //For gunSprite
+            Vector2 aimAngle = GM.inputM.MouseLocation;
+            Vector2 direction = aimAngle - Position2D;
+            direction = Vector2.Normalize(direction);
+            RotationHelper.FaceDirection(gunSprite, direction, DirectionAccuracy.free, 0);
+            gunSprite.Position2D = Position2D + (direction * 15);
             Vector2 currentPosition = Position2D;
 
             Vector3 d = new Vector3(0,0,0);
 
             if (GM.inputM.KeyDown(Left))
             {
-                //Vector3 d = RotationHelper.MyDirection(this, 270);
-                //Velocity += d * 20;// * GM.eventM.Delta;
                 d += Vector3.Left;
             }
             if (GM.inputM.KeyDown(Right))
@@ -158,8 +180,6 @@ namespace Template.Game
             {
                 d += Vector3.Up;
             }
-
-
             if (d == new Vector3(0, 0, 0)) RotationHelper.FaceDirection(this, Vector3.Down, DirectionAccuracy.free, 0);
             else
             {
@@ -167,16 +187,16 @@ namespace Template.Game
                 RotationHelper.VelocityInCurrentDirection(this, 500, 0);
             }
 
+            //For directionSprite
+            d.Normalize();
+            RotationHelper.FaceDirection(directionSprite, d, DirectionAccuracy.free, 0);
+            directionSprite.Position = Position + (d * 20);
 
-            //Velocity += d;
-
-            //For firing:
-
+            //For firing
             if ((GM.inputM.KeyDown(Shoot) || GM.inputM.MouseLeftButtonHeld()) && GM.eventM.Elapsed(tiShootCooldown))
             {
-                Vector2 fireAngle = GM.inputM.MouseLocation;
                 //create bullet and pass reference to player and angle
-                new Bullet(this, fireAngle);
+                new Bullet(this, aimAngle);
             }
 
             if (GM.inputM.KeyPressed(Boost) && (tiBoostDelay == null || GM.eventM.Elapsed(tiBoostDelay)))
@@ -188,6 +208,8 @@ namespace Template.Game
                 Vector3 b = Velocity;
                 Velocity += b * 2;
             }
+
+
         }
     }
 }
