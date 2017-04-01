@@ -32,7 +32,7 @@ namespace Template
 
             //Loading crosshair to frame ad colouring red
             Frame.Define(GM.txSprite, new Rectangle(34, 160, 36, 36));
-            Wash = Color.Red;
+            Wash = Color.LimeGreen;
             Align = Engine7.Align.topLeft;
             Layer = RenderLayer.hud;
 

@@ -27,8 +27,6 @@ namespace Template.Game
 
         public Enemy()
         {
-            health = 100;
-            CollisionActive = true;
         }
 
     }

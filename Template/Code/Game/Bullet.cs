@@ -6,9 +6,9 @@ namespace Template.Game
 {
     internal class Bullet : Sprite
     {
-        private Player player;
+        private Sprite player;
 
-        internal Player Player
+        internal Sprite Player
         {
             get
             {
@@ -21,7 +21,7 @@ namespace Template.Game
             //}
         }
 
-        public Bullet(Player player, Vector2 fireAngle)
+        public Bullet(Sprite player, Vector2 fireAngle)
         {
             //Bullet won't collide with player
             //player.CollisionAvoid = true;
@@ -85,7 +85,8 @@ namespace Template.Game
                 }
                 else
                 {
-                    //CollisionAbandonResponse = true;
+                    CollisionAbandonResponse = true;
+                    //Kill();
                 }
             }
             if(hit is Enemy)

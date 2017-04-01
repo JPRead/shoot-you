@@ -19,6 +19,20 @@ namespace Template.Game
         int score1 = 0;
         int score2 = 0;
         private Event tiGameTimer;
+        private static PlayerOne playerChar;
+
+        public static PlayerOne PlayerChar
+        {
+            get
+            {
+                return playerChar;
+            }
+
+            set
+            {
+                playerChar = value;
+            }
+        }
 
         public GameSetup() : base(false)
         {
@@ -26,7 +40,9 @@ namespace Template.Game
             GM.engineM.ScreenColour = Color.Black;
 
             //create players and generate level layout
-            new PlayerOne();
+            playerChar = new PlayerOne();
+
+            //playerChar = new PlayerOne();
 
             //Remove when enemy generation implemented
             new ChargerEnemy(new Vector2(100, 100));

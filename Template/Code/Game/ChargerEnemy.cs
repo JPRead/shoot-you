@@ -18,6 +18,12 @@ namespace Template
             //Set health
             Health = 100;
 
+            //Set collisions
+            CollisionActive = true;
+            CollisionPrimary = true;
+
+            Friction = 10f;
+
             //set management of sprite and graphic
             GM.engineM.AddSprite(this);
             Frame.Define(Tex.Triangle);
@@ -27,6 +33,33 @@ namespace Template
             Wash = Color.OrangeRed;
             SY = 1.25f;
 
+            UpdateCallBack += Move;
+            PrologueCallBack += Hit;
+            EpilogueCallBack += Stop;
         }
+
+        private void Move()
+        {
+            RotationHelper.FacePosition(this, GameSetup.PlayerChar.Position, DirectionAccuracy.free, 0, false);
+            RotationHelper.VelocityInCurrentDirection(this, 400, 0);
+        }
+
+        private void Stop(Sprite hit)
+        {
+            //stop if hit wall
+            if (hit is wall)
+                Velocity = Vector3.Zero;
+        }
+
+        private void Hit(Sprite hit)
+        {
+            if(hit == GameSetup.PlayerChar)
+            {
+                GameSetup.PlayerChar.Health -= 10;
+                if (GameSetup.PlayerChar.Health <= 0) GameSetup.PlayerChar.Kill();
+                Kill();
+            }
+        }
+
     }
 }

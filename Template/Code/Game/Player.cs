@@ -78,9 +78,11 @@ namespace Template.Game
         //Stopping collisions with bullets
         private void Hit(Sprite hit)
         {
-            if(hit is Bullet)
+            if (hit is Bullet)
             {
-                CollisionAbandonResponse = true;
+                Bullet bullet = (Bullet)hit;
+                if(bullet.Player == this)CollisionAbandonResponse = true;
+                //CollisionAbandonResponse = true;
             }
         }
 
@@ -171,6 +173,7 @@ namespace Template.Game
                 if (tiBoostDelay == null)
                     GM.eventM.AddTimer(tiBoostDelay = new Event(0.5f, "dodge delay"));
 
+                //Change this- currently adds more velocity if moving at angle.
                 Vector3 b = Velocity;
                 Velocity += b * 2;
             }
