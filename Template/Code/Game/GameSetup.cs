@@ -139,10 +139,16 @@ namespace Template.Game
         public override void Logic()
         {
             //display code
-            GM.textM.Draw(FontBank.arcadeLarge, "1 UP~" + score1, 30, 30, TextAtt.TopLeft);
-            GM.textM.Draw(FontBank.arcadeLarge, "2 UP~" + score2, GM.screenSize.Right - 30, 30, TextAtt.TopRight);
-            GM.textM.Draw(FontBank.arcadeLarge, "QUICKEST~" + Math.Round(GM.BestScore,2), GM.screenSize.Center.X, 10, TextAtt.Top);
-
+            //GM.textM.Draw(FontBank.arcadeLarge, "1 UP~" + score1, 30, 30, TextAtt.TopLeft);
+            //GM.textM.Draw(FontBank.arcadeLarge, "2 UP~" + score2, GM.screenSize.Right - 30, 30, TextAtt.TopRight);
+            string healthBar = "";
+            for (int i = 0; i < PlayerChar.Health; i++)
+            {
+                healthBar += "X";
+            }
+            GM.textM.Draw(FontBank.Arcade, "HEALTH", GM.screenSize.Center.X, 10, TextAtt.Top);
+            GM.textM.Draw(FontBank.arcadePixel, healthBar, GM.screenSize.Center.X, 50, TextAtt.Top);
+            GM.textM.Draw(FontBank.arcadePixel, healthBar, GM.screenSize.Center.X, 60, TextAtt.Top);
             //let player quit
             if (GM.inputM.KeyPressed(Keys.Escape))
             {

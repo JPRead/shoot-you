@@ -138,29 +138,40 @@ namespace Template.Game
         {
             Vector2 currentPosition = Position2D;
 
+            Vector3 d = new Vector3(0,0,0);
+
             if (GM.inputM.KeyDown(Left))
             {
-                Vector3 d = RotationHelper.MyDirection(this, 270);
-                Velocity += d * 20;// * GM.eventM.Delta;
+                //Vector3 d = RotationHelper.MyDirection(this, 270);
+                //Velocity += d * 20;// * GM.eventM.Delta;
+                d += Vector3.Left;
             }
             if (GM.inputM.KeyDown(Right))
             {
-                Vector3 d = RotationHelper.MyDirection(this, 90);
-                Velocity += d * 20;// * GM.eventM.Delta;
+                d += Vector3.Right;
             }
             if (GM.inputM.KeyDown(Forward))
             {
-                Vector3 d = RotationHelper.MyDirection(this, 0);
-                Velocity += d * 20;// * GM.eventM.Delta;
+                d += Vector3.Down;
             }
             if (GM.inputM.KeyDown(Backward))
             {
-                Vector3 d = RotationHelper.MyDirection(this, 180);
-                Velocity += d * 20;// * GM.eventM.Delta;
+                d += Vector3.Up;
             }
 
+
+            if (d == new Vector3(0, 0, 0)) RotationHelper.FaceDirection(this, Vector3.Down, DirectionAccuracy.free, 0);
+            else
+            {
+                RotationHelper.FaceDirection(this, d, DirectionAccuracy.free, 0);
+                RotationHelper.VelocityInCurrentDirection(this, 500, 0);
+            }
+
+
+            //Velocity += d;
+
             //For firing:
-            
+
             if ((GM.inputM.KeyDown(Shoot) || GM.inputM.MouseLeftButtonHeld()) && GM.eventM.Elapsed(tiShootCooldown))
             {
                 Vector2 fireAngle = GM.inputM.MouseLocation;

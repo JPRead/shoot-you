@@ -50,7 +50,7 @@ namespace Template.Game
 
             //Face direction vector
             RotationHelper.FaceDirection(this, direction, DirectionAccuracy.free, 0);
-            RotationHelper.VelocityInCurrentDirection(this, 500f, 0);
+            RotationHelper.VelocityInCurrentDirection(this, 1000f, 0);
 
             //collision setup
             CollisionActive = true;
