@@ -72,7 +72,7 @@ namespace Template.Game
 
             //set wrapping
             LimitInitialise();
-            Limit.ViewPortAction(LimitAction.wrap);
+            Limit.ViewPortAction(LimitAction.bounce);
 
             //flash then turn on collisions (invincibility)
             TimerInitialise();
