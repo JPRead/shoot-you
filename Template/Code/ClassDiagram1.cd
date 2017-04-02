@@ -3,28 +3,28 @@
   <Class Name="Template.Game.Bullet" Collapsed="true">
     <Position X="5.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAACAAAAAAIAAAAAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAACAAAAAAIAAAAAAAAAAAABAAAAAQAAAAA=</HashCode>
       <FileName>Game\Bullet.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Template.Game.Enemy" Collapsed="true">
     <Position X="12.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
       <FileName>Game\Enemy.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Template.Game.GameSetup" Collapsed="true">
     <Position X="2.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgAAAAAAACACAAAAIAAEAAAAIAAAAACAAAAAAAAA=</HashCode>
+      <HashCode>AIAAgAAAAAAAiACAAAAIAAEAAAAIgAAAACACAAAAAAA=</HashCode>
       <FileName>Game\GameSetup.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Template.Game.Player" Collapsed="true">
     <Position X="0.5" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gAgACACAAIAABAAAAAJAAQAAQQAAAAAAKACAEAAQAAo=</HashCode>
+      <HashCode>gAgACACAAIAABAAAAAJAAQAAQQAAAAAQKACAEAAYAAo=</HashCode>
       <FileName>Game\Player.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -105,13 +105,6 @@
       <FileName>Template Initialisation\Program.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Template.Test" Collapsed="true">
-    <Position X="8.75" Y="2.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Test.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Template.Title.TitleSetup" Collapsed="true">
     <Position X="0.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
@@ -122,8 +115,15 @@
   <Class Name="Template.ChargerEnemy">
     <Position X="12.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <HashCode>AAAAAAAAAIAAAAAAAAIAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>Game\ChargerEnemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Template.EnemySpawnSystem">
+    <Position X="8.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Game\EnemySpawnSystem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

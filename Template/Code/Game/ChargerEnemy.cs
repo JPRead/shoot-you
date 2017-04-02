@@ -16,7 +16,7 @@ namespace Template
         public ChargerEnemy(Vector2 startPos)
         {
             //Set health
-            Health = 100;
+            Health = 50;
 
             //Set collisions
             CollisionActive = true;
@@ -58,6 +58,7 @@ namespace Template
                 GameSetup.PlayerChar.Health -= 10;
                 if (GameSetup.PlayerChar.Health <= 0) GameSetup.PlayerChar.Kill();
                 Kill();
+                GM.audioM.PlayEffect("explode");
             }
         }
 

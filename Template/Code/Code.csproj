@@ -114,6 +114,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game\EnemySpawnSystem.cs" />
     <Compile Include="Game\ChargerEnemy.cs" />
     <Compile Include="Game\Bullet.cs" />
     <Compile Include="Game\Enemy.cs" />

@@ -23,8 +23,6 @@ namespace Template.Game
 
         public Bullet(Sprite player, Vector2 fireAngle)
         {
-            //Bullet won't collide with player
-            //player.CollisionAvoid = true;
             //Gets faster over time!
             //this.Friction = -0.5f;
             this.player = player;

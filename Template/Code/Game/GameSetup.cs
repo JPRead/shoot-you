@@ -20,6 +20,7 @@ namespace Template.Game
         int score2 = 0;
         private Event tiGameTimer;
         private static PlayerOne playerChar;
+        private static EnemySpawnSystem enemySpawnSystem;
 
         public static PlayerOne PlayerChar
         {
@@ -34,6 +35,19 @@ namespace Template.Game
             }
         }
 
+        public static EnemySpawnSystem EnemySpawnSystem
+        {
+            get
+            {
+                return enemySpawnSystem;
+            }
+
+            set
+            {
+                enemySpawnSystem = value;
+            }
+        }
+
         public GameSetup() : base(false)
         {
             GM.engineM.DebugDisplay = Debug.none;// Debug.fps | Debug.version | Debug.sprite;
@@ -42,10 +56,11 @@ namespace Template.Game
             //create players and generate level layout
             playerChar = new PlayerOne();
 
-            //playerChar = new PlayerOne();
-
             //Remove when enemy generation implemented
-            new ChargerEnemy(new Vector2(100, 100));
+            //new ChargerEnemy(new Vector2(100, 100));
+
+            //Enemy generation
+            enemySpawnSystem = new EnemySpawnSystem();
 
             //Create cursor and places centre on mouse position
             Cursor cursor = new Cursor();

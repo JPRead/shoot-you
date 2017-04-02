@@ -119,7 +119,6 @@ namespace Template.Game
             //stop if hit wall
             //if (hit is wall)
             //    Velocity = Vector3.Zero;
-            
         }
 
         /// <summary>

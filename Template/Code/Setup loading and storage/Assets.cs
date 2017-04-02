@@ -84,7 +84,8 @@ namespace Template
             //Sounds
             GM.loadM.AddSoundEffect("fruit", "audio\\fruit");
             GM.loadM.AddSoundEffect("extra man", "audio\\extra man");
-            GM.loadM.AddSoundEffect("fire", "audio\\fire");
+            GM.loadM.AddSoundEffect("fireunused", "audio\\fireunused");
+            GM.loadM.AddSoundEffect("explodeunused", "audio\\explodeunused");
             GM.loadM.AddSoundEffect("explode", "audio\\explode");
             GM.loadM.AddSoundEffect("shoot", "audio\\shoot");
             //Laser sound effect is designed to play for at most 8 seconds.
