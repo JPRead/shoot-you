@@ -33,6 +33,9 @@ namespace Template.Game
             SX = 3;
             SY = 24;
 
+            //Sound effects
+            GM.audioM.PlayEffect("shoot");
+
             //get player attributes
             Wash = player.Wash;
             RotationAngle = player.RotationAngle;
@@ -51,6 +54,7 @@ namespace Template.Game
             //Face direction vector
             RotationHelper.FaceDirection(this, direction, DirectionAccuracy.free, 0);
             RotationHelper.VelocityInCurrentDirection(this, 1000f, 0);
+            Position += RotationHelper.MyDirection(this, 0) * 32;
 
             //collision setup
             CollisionActive = true;
@@ -99,7 +103,6 @@ namespace Template.Game
                     enemy.Kill();
                 }
             }
-            
         }
         private void AfterHit(Sprite hit)
         {

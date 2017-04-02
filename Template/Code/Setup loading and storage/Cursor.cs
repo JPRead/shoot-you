@@ -37,7 +37,6 @@ namespace Template
             Layer = RenderLayer.hud;
 
             //Placing crosshair at mouse
-            
             Vector2 mouseposition = GM.inputM.MouseLocation - new Vector2(Width / 2, Height / 2);
             Position2D = mouseposition;
             WorldCoordinates = false;

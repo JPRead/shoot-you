@@ -44,7 +44,7 @@ namespace Template.Game
             gunSprite.Frame.Define(Tex.Rectangle50by50);
             gunSprite.Wash = col;
             gunSprite.SX = 0.1f;
-            gunSprite.SY = 0.75f;
+            gunSprite.SY = 0.6f;
 
             //Creating direction sprite
             directionSprite = new Sprite();
@@ -76,6 +76,10 @@ namespace Template.Game
 
             //flash then turn on collisions (invincibility)
             TimerInitialise();
+            gunSprite.TimerInitialise();
+            directionSprite.TimerInitialise();
+            gunSprite.Timer.FlashStopAfter(2f, 0.1f, 0.05f);
+            directionSprite.Timer.FlashStopAfter(2f, 0.1f, 0.05f);
             Timer.FlashStopAfter(2f, 0.1f, 0.05f);
             Timer.TimingDoneCallBack += MakeVunerable;
 
@@ -90,7 +94,7 @@ namespace Template.Game
             //Start a shooting timer
             GM.eventM.AddTimer(tiShootCooldown = new Event(0.1f, "Shoot Cooldown"));
 
-            
+            Moving = true;
         }
 
         //Stopping collisions with bullets
@@ -107,14 +111,15 @@ namespace Template.Game
         private void Display()
         {
             if (tiBoostDelay != null && tiBoostDelay.ElapsedSoFar < 0.5f)
-                GM.textM.Draw(FontBank.arcadePixel, "DODGE~COOLDOWN~" + Math.Round(0.5f - tiBoostDelay.ElapsedSoFar, 1), boostX, boostY, TextAtt.TopLeft);
+                GM.textM.Draw(FontBank.arcadePixel, "DODGE~COOLDOWN~" + Math.Round(0.5f - tiBoostDelay.ElapsedSoFar, 1), GM.screenSize.Left + 40, GM.screenSize.Bottom - 40, TextAtt.BottomLeft);
         }
 
         private void Stop(Sprite hit)
         {
             //stop if hit wall
-            if (hit is wall)
-                Velocity = Vector3.Zero;
+            //if (hit is wall)
+            //    Velocity = Vector3.Zero;
+            
         }
 
         /// <summary>
@@ -162,29 +167,32 @@ namespace Template.Game
             gunSprite.Position2D = Position2D + (direction * 15);
             Vector2 currentPosition = Position2D;
 
-            Vector3 d = new Vector3(0,0,0);
+            Vector3 d = new Vector3(0, 0, 0);
 
-            if (GM.inputM.KeyDown(Left))
+            if (tiBoostDelay == null || tiBoostDelay.ElapsedSoFar > 0.25f)
             {
-                d += Vector3.Left;
-            }
-            if (GM.inputM.KeyDown(Right))
-            {
-                d += Vector3.Right;
-            }
-            if (GM.inputM.KeyDown(Forward))
-            {
-                d += Vector3.Down;
-            }
-            if (GM.inputM.KeyDown(Backward))
-            {
-                d += Vector3.Up;
-            }
-            if (d == new Vector3(0, 0, 0)) RotationHelper.FaceDirection(this, Vector3.Down, DirectionAccuracy.free, 0);
-            else
-            {
-                RotationHelper.FaceDirection(this, d, DirectionAccuracy.free, 0);
-                RotationHelper.VelocityInCurrentDirection(this, 500, 0);
+                if (GM.inputM.KeyDown(Left))
+                {
+                    d += Vector3.Left;
+                }
+                if (GM.inputM.KeyDown(Right))
+                {
+                    d += Vector3.Right;
+                }
+                if (GM.inputM.KeyDown(Forward))
+                {
+                    d += Vector3.Down;
+                }
+                if (GM.inputM.KeyDown(Backward))
+                {
+                    d += Vector3.Up;
+                }
+                if (d == new Vector3(0, 0, 0)) RotationHelper.FaceDirection(this, Vector3.Down, DirectionAccuracy.free, 0);
+                else
+                {
+                    RotationHelper.FaceDirection(this, d, DirectionAccuracy.free, 0);
+                    RotationHelper.VelocityInCurrentDirection(this, 500, 0);
+                }
             }
 
             //For directionSprite
@@ -199,17 +207,25 @@ namespace Template.Game
                 new Bullet(this, aimAngle);
             }
 
+            //For boosting
             if (GM.inputM.KeyPressed(Boost) && (tiBoostDelay == null || GM.eventM.Elapsed(tiBoostDelay)))
             {
                 if (tiBoostDelay == null)
                     GM.eventM.AddTimer(tiBoostDelay = new Event(0.5f, "dodge delay"));
 
-                //Change this- currently adds more velocity if moving at angle.
-                Vector3 b = Velocity;
-                Velocity += b * 2;
+                //Raycasting to check for collisions and offset to avoid collision
+                //Position += d * 100;
+                //Ray findHits = new Ray(Position, d);
+
+                Friction = -5f;
+                Velocity += d * 1;
             }
 
-
+            if(tiBoostDelay != null && tiBoostDelay.ElapsedSoFar > 0.25f)
+            {
+                Friction = 10f;
+            }
         }
+
     }
 }

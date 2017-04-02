@@ -77,17 +77,18 @@ namespace Template
         public void StartPreLoader()
         {
             GM.gameState = GM.LOADING_ASSETS;
-            //load image files and copy to textures for easy reference
-            //tell preloader to load the following textures
+
+            //Textures
             GM.loadM.AddTexture(delegate (Texture2D t, string f) { txSprite = t; }, "graphics\\Sprites");
-            //fruit
+
+            //Sounds
             GM.loadM.AddSoundEffect("fruit", "audio\\fruit");
-            //on up
             GM.loadM.AddSoundEffect("extra man", "audio\\extra man");
-            //add the fire sound effect calling it shoot
             GM.loadM.AddSoundEffect("fire", "audio\\fire");
-            //add the explode sound effect calling it blow up
             GM.loadM.AddSoundEffect("explode", "audio\\explode");
+            GM.loadM.AddSoundEffect("shoot", "audio\\shoot");
+            //Laser sound effect is designed to play for at most 8 seconds.
+            GM.loadM.AddSoundEffect("laser", "audio\\laser");
 
             //start background loader waiting 1 milliseconds between each load
             GM.loadM.Start(1);

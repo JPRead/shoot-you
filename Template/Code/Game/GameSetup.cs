@@ -65,7 +65,7 @@ namespace Template.Game
         /// </summary>
         private void GenerateLevel()
         {
-            new wall(GM.screenSize.Center.X - 20, GM.screenSize.Center.Y - 200, 40, 400);
+            //new wall(GM.screenSize.Center.X - 20, GM.screenSize.Center.Y - 200, 40, 400);
         }
 
         /// <summary>
@@ -146,9 +146,9 @@ namespace Template.Game
             {
                 healthBar += "X";
             }
-            GM.textM.Draw(FontBank.Arcade, "HEALTH", GM.screenSize.Center.X, 10, TextAtt.Top);
-            GM.textM.Draw(FontBank.arcadePixel, healthBar, GM.screenSize.Center.X, 50, TextAtt.Top);
-            GM.textM.Draw(FontBank.arcadePixel, healthBar, GM.screenSize.Center.X, 60, TextAtt.Top);
+            GM.textM.Draw(FontBank.arcadePixel, "HEALTH:", GM.screenSize.Left + 175, GM.screenSize.Bottom - 40, TextAtt.BottomLeft);
+            GM.textM.Draw(FontBank.arcadePixel, healthBar, GM.screenSize.Left + 250, GM.screenSize.Bottom - 40, TextAtt.BottomLeft);
+            //GM.textM.Draw(FontBank.arcadePixel, healthBar, GM.screenSize.Center.X, 60, TextAtt.Top);
             //let player quit
             if (GM.inputM.KeyPressed(Keys.Escape))
             {
