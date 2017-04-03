@@ -195,9 +195,13 @@ namespace Template.Game
             }
 
             //For directionSprite
-            d.Normalize();
-            RotationHelper.FaceDirection(directionSprite, d, DirectionAccuracy.free, 0);
-            directionSprite.Position = Position + (d * 20);
+
+            //Create a normalized vector from d
+            Vector3 dNorm = d;
+            dNorm.Normalize();
+            RotationHelper.FaceDirection(directionSprite, dNorm, DirectionAccuracy.free, 0);
+            directionSprite.Position = Position + (dNorm * 20);
+
 
             //For firing
             if ((GM.inputM.KeyDown(Shoot) || GM.inputM.MouseLeftButtonHeld()) && GM.eventM.Elapsed(tiShootCooldown))
@@ -207,7 +211,7 @@ namespace Template.Game
             }
 
             //For boosting
-            if (GM.inputM.KeyPressed(Boost) && (tiBoostDelay == null || GM.eventM.Elapsed(tiBoostDelay)))
+            if (GM.inputM.KeyPressed(Boost) && (tiBoostDelay == null || GM.eventM.Elapsed(tiBoostDelay)) && d != Vector3.Zero)
             {
                 if (tiBoostDelay == null)
                     GM.eventM.AddTimer(tiBoostDelay = new Event(0.5f, "dodge delay"));
@@ -216,8 +220,8 @@ namespace Template.Game
                 //Position += d * 100;
                 //Ray findHits = new Ray(Position, d);
 
-                Friction = -5f;
-                Velocity += d * 1;
+                Friction = 0f;
+                Velocity += dNorm * 800;
             }
 
             if(tiBoostDelay != null && tiBoostDelay.ElapsedSoFar > 0.25f)
