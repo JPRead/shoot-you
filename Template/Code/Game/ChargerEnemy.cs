@@ -11,8 +11,6 @@ namespace Template
 {
     internal class ChargerEnemy : Enemy
     {
-
-
         public ChargerEnemy(Vector2 startPos)
         {
             //Set health

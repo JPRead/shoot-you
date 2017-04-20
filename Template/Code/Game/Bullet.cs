@@ -21,14 +21,14 @@ namespace Template.Game
             //}
         }
 
-        public Bullet(Sprite player, Vector2 fireAngle)
+        public Bullet(Sprite player, Vector2 fireAngle, float bulletSpeed)
         {
             //Gets faster over time!
             //this.Friction = -0.5f;
             this.player = player;
             GM.engineM.AddSprite(this);
             Frame.Define(Tex.SingleWhitePixel);
-            SX = 3;
+            SX = 4;
             SY = 24;
 
             //Sound effects
@@ -51,7 +51,7 @@ namespace Template.Game
 
             //Face direction vector
             RotationHelper.FaceDirection(this, direction, DirectionAccuracy.free, 0);
-            RotationHelper.VelocityInCurrentDirection(this, 1000f, 0);
+            RotationHelper.VelocityInCurrentDirection(this, bulletSpeed, 0);
             Position += RotationHelper.MyDirection(this, 0) * 32;
 
             //collision setup
@@ -81,9 +81,14 @@ namespace Template.Game
                 //don't shoot yourself
                 if (player != hit)
                 {
-                    hit.Kill();
+                    GameSetup.PlayerChar.Health -= 10;
+                    GM.audioM.PlayEffect("explode");
+
                     Kill();
-                    MessageBus.Instance.BroadcastMessage(ExtraMessageTypes.PlayerDestroyed, hit);
+                    if (GameSetup.PlayerChar.Health <= 0)
+                    {
+                        GameSetup.PlayerChar.Kill();
+                    }
                 }
                 else
                 {

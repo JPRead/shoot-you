@@ -8,38 +8,52 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Template.Game.Enemy" Collapsed="true">
-    <Position X="12.5" Y="0.5" Width="1.5" />
+    <Position X="0.75" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
       <FileName>Game\Enemy.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Template.Game.GameSetup" Collapsed="true">
-    <Position X="2.75" Y="1.75" Width="1.5" />
+    <Position X="0.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AIAAgAAAAAAAiACAAAAIAAEAAAAIgAAAACACAAAAAAA=</HashCode>
       <FileName>Game\GameSetup.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Template.Game.Player" Collapsed="true">
-    <Position X="0.5" Y="3.5" Width="1.5" />
+    <Position X="0.75" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gAgACACAAIAABAAAAAJAAQAAQQAAAAAQKACAEAAYAAo=</HashCode>
       <FileName>Game\Player.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Template.Game.PlayerOne" Collapsed="true">
-    <Position X="0.5" Y="5" Width="1.5" />
+    <Position X="3" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Game\PlayerOne.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Template.Game.wall" Collapsed="true">
-    <Position X="8.75" Y="0.5" Width="1.5" />
+    <Position X="8.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Game\wall.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Template.ChargerEnemy" Collapsed="true">
+    <Position X="0.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAIAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Game\ChargerEnemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Template.EnemySpawnSystem" Collapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAABBAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Game\EnemySpawnSystem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Template.Marker" Collapsed="true">
@@ -78,7 +92,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Template.BasicSetup" Collapsed="true">
-    <Position X="1.75" Y="0.5" Width="1.5" />
+    <Position X="0.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAQA=</HashCode>
       <FileName>Setup loading and storage\BasicSetup.cs</FileName>
@@ -106,24 +120,17 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Template.Title.TitleSetup" Collapsed="true">
-    <Position X="0.5" Y="1.75" Width="1.5" />
+    <Position X="3" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAACAAAAAAAAA=</HashCode>
       <FileName>Title\TitleSetup.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Template.ChargerEnemy">
-    <Position X="12.5" Y="1.5" Width="1.5" />
+  <Class Name="Template.StraferEnemy">
+    <Position X="2.5" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAIAAAAAAAAIAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
-      <FileName>Game\ChargerEnemy.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Template.EnemySpawnSystem">
-    <Position X="8.75" Y="2.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Game\EnemySpawnSystem.cs</FileName>
+      <HashCode>AAAAAAAAAIAAAAAAAAIAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Game\StraferEnemy.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

@@ -69,10 +69,19 @@ namespace Template
             }
 
             //Every 5 seconds
-            if (((int)tiSpawnTimer.ElapsedSoFar % 1) == 0)
+            if (((int)tiSpawnTimer.ElapsedSoFar % 5) == 0)
             {
-                ChargerEnemy chargerEnemy = new ChargerEnemy(spawnPos);
+                StraferEnemy straferEnemy = new StraferEnemy(spawnPos);
             }
+            else
+            {
+                //Every 1 second
+                if (((int)tiSpawnTimer.ElapsedSoFar % 1) == 0)
+                {
+                    ChargerEnemy chargerEnemy = new ChargerEnemy(spawnPos);
+                }
+            }
+
         }
     }
 }
