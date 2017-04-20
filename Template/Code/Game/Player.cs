@@ -148,11 +148,11 @@ namespace Template.Game
             Boost = boost;
         }
 
-        //public void SetBoot(float x, float y)
-        //{
-        //    boostX = x;
-        //    boostY = y;
-        //}
+        public void SetBoot(float x, float y)
+        {
+            boostX = x;
+            boostY = y;
+        }
         /// <summary>
         /// act on key sets to move player and shoot
         /// </summary>
