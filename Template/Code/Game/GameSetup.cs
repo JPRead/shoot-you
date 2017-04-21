@@ -148,7 +148,6 @@ namespace Template.Game
 
             //run BackToTitle subroutine after 10 seconds
             GM.eventM.DelayCall(10, BackToTitle);
-
         }
 
         public override void Logic()
@@ -156,6 +155,8 @@ namespace Template.Game
             //display code
             //GM.textM.Draw(FontBank.arcadeLarge, "1 UP~" + score1, 30, 30, TextAtt.TopLeft);
             //GM.textM.Draw(FontBank.arcadeLarge, "2 UP~" + score2, GM.screenSize.Right - 30, 30, TextAtt.TopRight);
+
+            //Health bar
             string healthBar = "";
             for (int i = 0; i < PlayerChar.Health; i++)
             {
@@ -163,7 +164,10 @@ namespace Template.Game
             }
             GM.textM.Draw(FontBank.arcadePixel, "HEALTH:", GM.screenSize.Left + 175, GM.screenSize.Bottom - 40, TextAtt.BottomLeft);
             GM.textM.Draw(FontBank.arcadePixel, healthBar, GM.screenSize.Left + 250, GM.screenSize.Bottom - 40, TextAtt.BottomLeft);
-            //GM.textM.Draw(FontBank.arcadePixel, healthBar, GM.screenSize.Center.X, 60, TextAtt.Top);
+
+            if (PlayerChar.Health <= 0) tiGameTimer.Paused = true;
+            GM.textM.Draw(FontBank.arcadePixel, "Time: " + Convert.ToString((int)tiGameTimer.ElapsedSoFar), GM.screenSize.Right - 175, GM.screenSize.Bottom - 40, TextAtt.BottomLeft);
+
             //let player quit
             if (GM.inputM.KeyPressed(Keys.Escape))
             {

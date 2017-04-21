@@ -77,10 +77,12 @@ namespace Template
                 eventM = new EventManager(this, -1, false);
 
             //set resolution 
+            screenSize.Width = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            screenSize.Height = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             graphics.PreferredBackBufferWidth = screenSize.Width;
             graphics.PreferredBackBufferHeight = screenSize.Height;
+            graphics.IsFullScreen = true;
 
-            
             //CheckSaveFile();
             //CheckAssemblyDetails();
         }

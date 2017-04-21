@@ -158,6 +158,8 @@ namespace Template.Game
         /// </summary>
         private void Move()
         {
+
+
             //For gunSprite
             Vector2 aimAngle = GM.inputM.MouseLocation;
             Vector2 direction = aimAngle - Position2D;

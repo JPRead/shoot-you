@@ -46,9 +46,12 @@ namespace Template
             FuneralCallBack += KillSprites;
 
             GM.eventM.AddTimer(tiSwitchDirection = new Event(4f, "Switch Direction"));
-            GM.eventM.AddTimer(tiShootCooldown = new Event(1f, "Shoot Cooldown"));
+            GM.eventM.AddTimer(tiShootCooldown = new Event(0.75f, "Shoot Cooldown"));
 
             Moving = true;
+
+            LimitInitialise();
+            Limit.ViewPortAction(LimitAction.bounce);
         }
 
         private void Move()
@@ -66,13 +69,14 @@ namespace Template
             if (distanceFromPlayer > 200)
             {
                 RotationHelper.FacePosition(this, GameSetup.PlayerChar.Position, DirectionAccuracy.free, 0, false);
-                RotationHelper.VelocityInCurrentDirection(this, 600, 0);
+                RotationHelper.VelocityInCurrentDirection(this, 500, 0);
+
             }
             if(distanceFromPlayer < 400)
             {
                 int dirMultiplier = 1;
                 if (tiSwitchDirection.ElapsedSoFar > 2) dirMultiplier = -1;
-                RotationHelper.VelocityInThisDirection(this, RotationHelper.MyDirection(this, dirMultiplier * 60), 300);
+                RotationHelper.VelocityInThisDirection(this, RotationHelper.MyDirection(this, dirMultiplier * 60), 250);
                 //For firing
                 if (GM.eventM.Elapsed(tiShootCooldown))
                 {
