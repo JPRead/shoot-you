@@ -107,6 +107,7 @@ namespace Template.Game
             }
         }
 
+        //Displaying dodge cooldown
         private void Display()
         {
             if (tiBoostDelay != null && tiBoostDelay.ElapsedSoFar < 0.5f)
@@ -156,13 +157,12 @@ namespace Template.Game
             boostX = x;
             boostY = y;
         }
+
         /// <summary>
         /// act on key sets to move player and shoot
         /// </summary>
         private void Move()
         {
-
-
             //For gunSprite
             Vector2 aimAngle = GM.inputM.MouseLocation;
             Vector2 direction = aimAngle - Position2D;
@@ -171,8 +171,8 @@ namespace Template.Game
             gunSprite.Position2D = Position2D + (direction * 15);
             Vector2 currentPosition = Position2D;
 
+            //For dodging
             Vector3 d = new Vector3(0, 0, 0);
-
             if (tiBoostDelay == null || tiBoostDelay.ElapsedSoFar > 0.25f)
             {
                 if (GM.inputM.KeyDown(Left))
@@ -200,13 +200,10 @@ namespace Template.Game
             }
 
             //For directionSprite
-
-            //Create a normalized vector from d
             Vector3 dNorm = d;
             dNorm.Normalize();
             RotationHelper.FaceDirection(directionSprite, dNorm, DirectionAccuracy.free, 0);
             directionSprite.Position = Position + (dNorm * 20);
-
 
             //For firing
             if ((GM.inputM.KeyDown(Shoot) || GM.inputM.MouseLeftButtonHeld()) && GM.eventM.Elapsed(tiShootCooldown))
@@ -229,6 +226,7 @@ namespace Template.Game
                 Velocity += dNorm * 800;
             }
 
+            //Resetting dodge delay for displaying
             if(tiBoostDelay != null && tiBoostDelay.ElapsedSoFar > 0.25f)
             {
                 Friction = 10f;

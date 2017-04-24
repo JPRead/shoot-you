@@ -68,10 +68,13 @@ namespace Template.Game
                         healthSprite.Wash = Wash;
                         healthSprite.SX = 0.01f * health;
                     }
-
                 }
             }
         }
+
+        /// <summary>
+        /// Called on funeral
+        /// </summary>
         private void KillHealthBar()
         {
             healthSprite.Kill();

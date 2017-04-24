@@ -104,6 +104,7 @@ namespace Template.Game
                 if (enemy.Health <= 0)
                 {
                     enemy.Kill();
+                    GM.audioM.PlayEffect("enemykilled");
                 }
             }
         }
