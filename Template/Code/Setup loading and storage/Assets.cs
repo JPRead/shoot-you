@@ -33,7 +33,7 @@ namespace Template
         /// <summary>
         /// how many times a second do you want the internal clocks and logic to operate at defaults to 100
         /// </summary>
-        public static int UPDATE_RATE = 200;
+        public static int UPDATE_RATE = 60;
         /// <summary>
         /// reference to screen size - smaller is better as this will be quickler
         /// </summary>
