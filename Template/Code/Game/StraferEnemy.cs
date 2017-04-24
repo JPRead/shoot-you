@@ -34,6 +34,7 @@ namespace Template
             Position2D = startPos;
             Wash = Color.OrangeRed;
 
+            //Create gunSprite
             gunSprite = new Sprite();
             GM.engineM.AddSprite(gunSprite);
             gunSprite.Frame.Define(Tex.Rectangle50by50);
@@ -41,15 +42,17 @@ namespace Template
             gunSprite.SX = 0.1f;
             gunSprite.SY = 0.6f;
 
+            //Callbacks
             UpdateCallBack += Move;
             PrologueCallBack += Hit;
             FuneralCallBack += KillSprites;
 
+            //Timers
             GM.eventM.AddTimer(tiSwitchDirection = new Event(4f, "Switch Direction"));
             GM.eventM.AddTimer(tiShootCooldown = new Event(0.75f, "Shoot Cooldown"));
 
+            //Prevent moving off screen
             Moving = true;
-
             LimitInitialise();
             Limit.ViewPortAction(LimitAction.bounce);
         }
@@ -64,19 +67,22 @@ namespace Template
             gunSprite.Position2D = Position2D + (direction * 15);
             Vector2 currentPosition = Position2D;
 
+            //For movement:
             float distanceFromPlayer = Vector2.Distance(Position2D, playerPos);
-
             if (distanceFromPlayer > 200)
             {
+                //Move towards player
                 RotationHelper.FacePosition(this, GameSetup.PlayerChar.Position, DirectionAccuracy.free, 0, false);
                 RotationHelper.VelocityInCurrentDirection(this, 500, 0);
 
             }
             if(distanceFromPlayer < 400)
             {
+                //Switch strafe direction after 2 seconds
                 int dirMultiplier = 1;
                 if (tiSwitchDirection.ElapsedSoFar > 2) dirMultiplier = -1;
                 RotationHelper.VelocityInThisDirection(this, RotationHelper.MyDirection(this, dirMultiplier * 60), 250);
+
                 //For firing
                 if (GM.eventM.Elapsed(tiShootCooldown))
                 {
@@ -93,10 +99,7 @@ namespace Template
 
         private void KillSprites()
         {
-            if (Health <= 0)
-            {
-                gunSprite.Kill();
-            }
+            gunSprite.Kill();
         }
     }
 }

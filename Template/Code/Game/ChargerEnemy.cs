@@ -31,26 +31,33 @@ namespace Template
             Wash = Color.OrangeRed;
             SY = 1.25f;
 
+            //Callbacks
             UpdateCallBack += Move;
             PrologueCallBack += Hit;
-            EpilogueCallBack += Stop;
+            //EpilogueCallBack += Stop;
         }
 
         private void Move()
         {
+            //Move towards player
             RotationHelper.FacePosition(this, GameSetup.PlayerChar.Position, DirectionAccuracy.free, 0, false);
             RotationHelper.VelocityInCurrentDirection(this, 400, 0);
         }
 
-        private void Stop(Sprite hit)
-        {
-            //stop if hit wall
-            if (hit is wall)
-                Velocity = Vector3.Zero;
-        }
+        /// <summary>
+        /// For now this is unneeded
+        /// </summary>
+        /// <param name="hit"></param>
+        //private void Stop(Sprite hit)
+        //{
+        //    //stop if hit wall
+        //    if (hit is wall)
+        //        Velocity = Vector3.Zero;
+        //}
 
         private void Hit(Sprite hit)
         {
+            //Damage player upon hit
             if(hit == GameSetup.PlayerChar)
             {
                 GameSetup.PlayerChar.Health -= 10;

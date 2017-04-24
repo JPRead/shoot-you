@@ -70,7 +70,7 @@ namespace Template.Game
             UpdateCallBack += Move;
             UpdateCallBack += Display;
 
-            //set wrapping
+            //Prevent moving off screen
             LimitInitialise();
             Limit.ViewPortAction(LimitAction.bounce);
 
@@ -86,18 +86,17 @@ namespace Template.Game
             //Add friction
             Friction = 10f;
 
-            //set check for wall collision
+            //Setting up collisions
+            Moving = true;
             CollisionPrimary = true;
             PrologueCallBack += Hit;
-            EpilogueCallBack += Stop;
+            //EpilogueCallBack += Stop;
 
-            //Start a shooting timer
+            //Timers
             GM.eventM.AddTimer(tiShootCooldown = new Event(0.1f, "Shoot Cooldown"));
-
-            Moving = true;
         }
 
-        //Stopping collisions with bullets
+        //Stopping collisions with own bullets
         private void Hit(Sprite hit)
         {
             if (hit is Bullet)
@@ -114,12 +113,16 @@ namespace Template.Game
                 GM.textM.Draw(FontBank.arcadePixel, "DODGE~COOLDOWN~" + Math.Round(0.5f - tiBoostDelay.ElapsedSoFar, 1), GM.screenSize.Left + 40, GM.screenSize.Bottom - 40, TextAtt.BottomLeft);
         }
 
-        private void Stop(Sprite hit)
-        {
-            //stop if hit wall
-            //if (hit is wall)
-            //    Velocity = Vector3.Zero;
-        }
+        /// <summary>
+        /// Unneeded at the moment
+        /// </summary>
+        /// <param name="hit"></param>
+        //private void Stop(Sprite hit)
+        //{
+        //    //stop if hit wall
+        //    //if (hit is wall)
+        //    //    Velocity = Vector3.Zero;
+        //}
 
         /// <summary>
         /// make collision active

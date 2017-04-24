@@ -36,6 +36,7 @@ namespace Template
         public static int UPDATE_RATE = 60;
         /// <summary>
         /// reference to screen size - smaller is better as this will be quickler
+        /// Defaults to this value, true value is found later using graphics manager
         /// </summary>
         public static Rectangle screenSize = new Rectangle(0, 0, 1600, 900);
         /// <summary>
