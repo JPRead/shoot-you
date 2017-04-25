@@ -19,6 +19,5 @@ namespace Template.Game
             SetKeys(Keys.A,Keys.D,Keys.W,Keys.S,Keys.LeftControl,Keys.Space);
             SetBoot(100, GM.screenSize.Bottom - 50);
         }
-
     }
 }

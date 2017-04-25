@@ -122,6 +122,7 @@
     <Compile Include="Game\PlayerOne.cs" />
     <Compile Include="Game\PlayerTwo.cs" />
     <Compile Include="Game\wall.cs" />
+    <Compile Include="Game\LaserEnemy.cs" />
     <Compile Include="Scoring\Marker.cs" />
     <Compile Include="Scoring\MenuInitial.cs" />
     <Compile Include="Scoring\ScoreEntry.cs" />

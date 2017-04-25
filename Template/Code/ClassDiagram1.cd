@@ -10,7 +10,7 @@
   <Class Name="Template.Game.Enemy" Collapsed="true">
     <Position X="0.75" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <HashCode>AAQACAAAAAAACAAAAAAgAAAAAAAAAAAAABAAAAABAAg=</HashCode>
       <FileName>Game\Enemy.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -24,7 +24,7 @@
   <Class Name="Template.Game.Player" Collapsed="true">
     <Position X="0.75" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gAgACACAAIAABAAAAAJAAQAAQQAAAAAQKACAEAAYAAo=</HashCode>
+      <HashCode>gAgACACAAIAABAAAAAJAAQAAQQAAAAAYQAAAEAAYAAo=</HashCode>
       <FileName>Game\Player.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -45,7 +45,7 @@
   <Class Name="Template.ChargerEnemy" Collapsed="true">
     <Position X="0.75" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAIAAAAAAAAIAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAIAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Game\ChargerEnemy.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -129,8 +129,15 @@
   <Class Name="Template.StraferEnemy">
     <Position X="2.5" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAIAAAAAAAAIAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAIAAAAAAAAIAAAAAAACAQAAQAAAAAAAQAAA=</HashCode>
       <FileName>Game\StraferEnemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Template.LaserEnemy">
+    <Position X="4.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAIAAAAAAAAAAAAAQAQAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Game\LaserEnemy.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

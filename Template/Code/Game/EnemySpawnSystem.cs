@@ -68,20 +68,27 @@ namespace Template
                 spawnPos = new Vector2(spawnX, spawnY);
             }
 
-            //Every 5 seconds
-            if (((int)tiSpawnTimer.ElapsedSoFar % 5) == 0)
+            //Every 20 seconds
+            if (((int)tiSpawnTimer.ElapsedSoFar % 20) == 0)
             {
-                StraferEnemy straferEnemy = new StraferEnemy(spawnPos);
+                LaserEnemy laserEnemy = new LaserEnemy(spawnPos, 1);
             }
             else
             {
-                //Every 1 second
-                if (((int)tiSpawnTimer.ElapsedSoFar % 1) == 0)
+                //Every 5 seconds
+                if (((int)tiSpawnTimer.ElapsedSoFar % 5) == 0)
                 {
-                    ChargerEnemy chargerEnemy = new ChargerEnemy(spawnPos);
+                    StraferEnemy straferEnemy = new StraferEnemy(spawnPos);
+                }
+                else
+                {
+                    //Every 1 second
+                    if (((int)tiSpawnTimer.ElapsedSoFar % 1) == 0)
+                    {
+                        ChargerEnemy chargerEnemy = new ChargerEnemy(spawnPos);
+                    }
                 }
             }
-
         }
     }
 }

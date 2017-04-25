@@ -9,8 +9,8 @@ namespace Template.Game
     internal class Player : Sprite
     {
         //keys for controlling player
-        private Keys Right;
-        private Keys Left;
+        private Keys MoveRight;
+        private Keys MoveLeft;
         private Keys Shoot;
         private Keys Forward;
         private Keys Backward;
@@ -122,7 +122,7 @@ namespace Template.Game
         //{
         //    //stop if hit wall
         //    //if (hit is wall)
-        //    //    Velocity = Vector3.Zero;
+        //    //Velocity = Vector3.Zero;
         //}
 
         /// <summary>
@@ -144,8 +144,8 @@ namespace Template.Game
         /// <param name="boost"></param>
         public void SetKeys(Keys left, Keys right, Keys forward, Keys backward, Keys shoot, Keys boost)
         {
-            Right = right;
-            Left = left;
+            MoveRight = right;
+            MoveLeft = left;
             Forward = forward;
             Backward = backward;
             Shoot = shoot;
@@ -175,11 +175,11 @@ namespace Template.Game
             Vector3 d = new Vector3(0, 0, 0);
             if (tiBoostDelay == null || tiBoostDelay.ElapsedSoFar > 0.25f)
             {
-                if (GM.inputM.KeyDown(Left))
+                if (GM.inputM.KeyDown(MoveLeft))
                 {
                     d += Vector3.Left;
                 }
-                if (GM.inputM.KeyDown(Right))
+                if (GM.inputM.KeyDown(MoveRight))
                 {
                     d += Vector3.Right;
                 }
