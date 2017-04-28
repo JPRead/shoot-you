@@ -62,7 +62,7 @@ namespace Template
             direction.Normalize();
 
             //Creating lasers for use
-            if (laserAmount == 1)
+            if (laserAmount >= 1)
             {
                 laserTop = new Sprite();
                 GM.engineM.AddSprite(laserTop);
@@ -71,15 +71,8 @@ namespace Template
                 laserTop.SY = 1000f;
                 laserTop.Visible = false;
             }
-            if (laserAmount == 2)
+            if (laserAmount >= 2)
             {
-                laserTop = new Sprite();
-                GM.engineM.AddSprite(laserTop);
-                laserTop.Frame.Define(Tex.Rectangle50by50);
-                laserTop.SX = 0.1f;
-                laserTop.SY = 1000f;
-                laserTop.Visible = false;
-
                 laserBottom = new Sprite();
                 GM.engineM.AddSprite(laserBottom);
                 laserBottom.Frame.Define(Tex.Rectangle50by50);
@@ -89,20 +82,6 @@ namespace Template
             }
             if (laserAmount == 4)
             {
-                laserTop = new Sprite();
-                GM.engineM.AddSprite(laserTop);
-                laserTop.Frame.Define(Tex.Rectangle50by50);
-                laserTop.SX = 0.1f;
-                laserTop.SY = 1000f;
-                laserTop.Visible = false;
-
-                laserBottom = new Sprite();
-                GM.engineM.AddSprite(laserBottom);
-                laserBottom.Frame.Define(Tex.Rectangle50by50);
-                laserBottom.SX = 0.1f;
-                laserBottom.SY = 1000f;
-                laserBottom.Visible = false;
-
                 laserRight = new Sprite();
                 GM.engineM.AddSprite(laserRight);
                 laserRight.Frame.Define(Tex.Rectangle50by50);
@@ -140,38 +119,27 @@ namespace Template
             //For shooting
             if(tiBirth.ElapsedSoFar > 5)
             {
-                if(laserAmount == 1)
+                if(laserAmount >= 1)
                 {
                     laserTop.Position2D = Position2D;
                     laserTop.RotationAngle = RotationAngle;
-
-
+                    laserTop.Visible = true;
                 }
-                if (laserAmount == 2)
+                if (laserAmount >= 2)
                 {
-                    laserTop.Position2D = Position2D;
-                    laserTop.RotationAngle = RotationAngle;
-
-
                     laserBottom.Position2D = Position2D;
-                    laserBottom.RotationAngle = RotationAngle;
-
-
+                    laserBottom.RotationAngle = RotationAngle + 180;
+                    laserBottom.Visible = true;
                 }
                 if (laserAmount == 4)
                 {
-                    laserTop.Position2D = Position2D;
-                    laserTop.RotationAngle = RotationAngle;
-
-
-                    laserBottom.Position2D = Position2D;
-
-
                     laserRight.Position2D = Position2D;
-
+                    laserRight.RotationAngle = RotationAngle + 90;
+                    laserRight.Visible = true;
 
                     laserLeft.Position2D = Position2D;
-
+                    laserLeft.RotationAngle = RotationAngle + 270;
+                    laserLeft.Visible = true;
 
                 }
             }
