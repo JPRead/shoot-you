@@ -37,7 +37,7 @@ namespace Template.Game
             healthSprite.SY = 0.1f;
             heightAbove = Convert.ToSingle(Math.Sqrt(Width * Width + Height * Height)) / 2;
             healthSprite.X = X;
-            healthSprite.Y = Y + heightAbove - 50;
+            healthSprite.Y = Y + heightAbove;
 
             //Callbacks
             EpilogueCallBack += HealthBar;
@@ -49,7 +49,7 @@ namespace Template.Game
         {
             //For healthSprite:
             healthSprite.X = X;
-            healthSprite.Y = Y + heightAbove - 50;
+            healthSprite.Y = Y + heightAbove;
         }
 
         /// <summary>

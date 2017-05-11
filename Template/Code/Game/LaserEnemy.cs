@@ -30,6 +30,9 @@ namespace Template
         {
             laserAmount = numLasers;
 
+            Random setRotation = new Random();
+            RotationAngle = setRotation.Next(0, 360);
+
             //Set health
             Health = 100;
 
@@ -75,38 +78,13 @@ namespace Template
             laserTop.Visible = false;
             laserTop.Wash = Color.OrangeRed;
             laserTop.CollisionActive = false;
-            laserTop.CollisionCallBack += CollisionLaser;
-            laserTop.Moving = true;
-
-            //2 lasers
-            if (laserAmount >= 2)
-            {
-                laserBottom = new Sprite();
-                GM.engineM.AddSprite(laserBottom);
-                laserBottom.Frame.Define(Tex.Rectangle50by50);
-                laserBottom.SX = 0.1f;
-                laserBottom.SY = 1000f;
-                laserBottom.Visible = false;
-                laserBottom.Wash = Color.OrangeRed;
-                laserBottom.CollisionActive = false;
-                laserBottom.CollisionCallBack += CollisionLaser;
-                laserBottom.Moving = true;
-            }
+            laserTop.CollisionPrimary = true;
+            laserTop.PrologueCallBack += CollisionLaser;
+            //laserTop.Moving = true;
 
             //4 lasers
             if (laserAmount == 4)
             {
-                laserRight = new Sprite();
-                GM.engineM.AddSprite(laserRight);
-                laserRight.Frame.Define(Tex.Rectangle50by50);
-                laserRight.SX = 0.1f;
-                laserRight.SY = 1000f;
-                laserRight.Visible = false;
-                laserRight.Wash = Color.OrangeRed;
-                laserRight.CollisionActive = false;
-                laserRight.CollisionCallBack += CollisionLaser;
-                laserRight.Moving = true;
-
                 laserLeft = new Sprite();
                 GM.engineM.AddSprite(laserLeft);
                 laserLeft.Frame.Define(Tex.Rectangle50by50);
@@ -115,8 +93,9 @@ namespace Template
                 laserLeft.Visible = false;
                 laserLeft.Wash = Color.OrangeRed;
                 laserLeft.CollisionActive = false;
-                laserLeft.CollisionCallBack += CollisionLaser;
-                laserLeft.Moving = true;
+                laserLeft.CollisionPrimary = true;
+                laserLeft.PrologueCallBack += CollisionLaser;
+                //laserLeft.Moving = true;
             }
 
             //Prevent moving off screen
@@ -139,8 +118,26 @@ namespace Template
                     GameSetup.PlayerChar.Health -= 1;
                 }
             }
+            if(hit is Bullet)
+            {
+                //1 laser
+                laserTop.CollisionAbandonResponse = true;
 
-            Velocity = Vector3.Zero;
+                //4 lasers
+                if (laserAmount == 4)
+                {
+                    laserLeft.CollisionAbandonResponse = true;
+                }
+            }
+
+            //1 laser
+            laserTop.Velocity = Vector3.Zero;
+
+            //4 lasers
+            if (laserAmount == 4)
+            {
+                laserLeft.Velocity = Vector3.Zero;
+            }
         }
 
         private void Move()
@@ -153,7 +150,7 @@ namespace Template
             //Then do this
             else
             {
-                RotationVelocity = 22.5f;
+                RotationVelocity = 45f;
             }
             
             //For shooting
@@ -164,23 +161,10 @@ namespace Template
                 laserTop.Position2D = Position2D;
                 laserTop.RotationAngle = RotationAngle;
                 laserTop.Visible = true;
-                
-
-                //2 lasers
-                if (laserAmount >= 2)
-                {
-                    laserBottom.Position2D = Position2D;
-                    laserBottom.RotationAngle = RotationAngle + 180;
-                    laserBottom.Visible = true;
-                }
 
                 //4 lasers
                 if (laserAmount == 4)
                 {
-                    laserRight.Position2D = Position2D;
-                    laserRight.RotationAngle = RotationAngle + 90;
-                    laserRight.Visible = true;
-
                     laserLeft.Position2D = Position2D;
                     laserLeft.RotationAngle = RotationAngle + 270;
                     laserLeft.Visible = true;
@@ -193,22 +177,35 @@ namespace Template
                 //1 laser
                 laserTop.Wash = Color.Red;
                 laserTop.CollisionActive = true;
-
-                //2 lasers
-                if (laserAmount >= 2)
-                {
-                    laserBottom.Wash = Color.Red;
-                    laserBottom.CollisionActive = true;
-                }
+                laserTop.SX = 0.2f;
 
                 //4 lasers
                 if (laserAmount == 4)
                 {
-                    laserRight.Wash = Color.Red;
-                    laserRight.CollisionActive = true;
-
                     laserLeft.Wash = Color.Red;
                     laserLeft.CollisionActive = true;
+                    laserTop.SX = 0.2f;
+                }
+            }
+
+            //Every 10 seconds
+            if(tiBirth.ElapsedSoFar >= 10)
+            {
+                GM.eventM.AddEventRaiseOnce(tiBirth = new Event(10f, "Birth timer"));
+
+                //1 laser
+                laserTop.CollisionActive = false;
+                laserTop.Wash = Color.OrangeRed;
+                laserTop.Visible = false;
+                laserTop.SX = 0.1f;
+
+                //4 lasers
+                if (laserAmount == 4)
+                {
+                    laserLeft.CollisionActive = false;
+                    laserLeft.Wash = Color.OrangeRed;
+                    laserLeft.Visible = false;
+                    laserLeft.SX = 0.1f;
                 }
             }
         }
@@ -218,17 +215,9 @@ namespace Template
             //1 laser
             laserTop.Kill();
 
-            //2 lasers
-            if (laserAmount >= 2)
-            {
-                laserBottom.Kill();
-            }
-
             //4 lasers
             if (laserAmount == 4)
             {
-                laserRight.Kill();
-
                 laserLeft.Kill();
             }
         }
