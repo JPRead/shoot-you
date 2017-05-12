@@ -35,12 +35,13 @@ namespace Template.Game
             healthSprite.Frame.Define(Tex.Rectangle50by50);
             healthSprite.SX = 0.01f * health;
             healthSprite.SY = 0.1f;
+            //healthSprite.SY = 50;
             heightAbove = Convert.ToSingle(Math.Sqrt(Width * Width + Height * Height)) / 2;
             healthSprite.X = X;
-            healthSprite.Y = Y + heightAbove;
+            healthSprite.Y = Y + heightAbove - Height;
 
             //Callbacks
-            EpilogueCallBack += HealthBar;
+            PrologueCallBack += HealthBar;
             UpdateCallBack += Update;
             FuneralCallBack += KillHealthBar;
         }
@@ -48,8 +49,9 @@ namespace Template.Game
         private void Update()
         {
             //For healthSprite:
+            healthSprite.Wash = Wash;
             healthSprite.X = X;
-            healthSprite.Y = Y + heightAbove;
+            healthSprite.Y = Y + heightAbove - 50;
         }
 
         /// <summary>
@@ -65,7 +67,6 @@ namespace Template.Game
                 {
                     if (health > 0)
                     {
-                        healthSprite.Wash = Wash;
                         healthSprite.SX = 0.01f * health;
                     }
                 }

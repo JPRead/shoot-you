@@ -16,19 +16,17 @@ namespace Template
         private Event tiDamageCooldown;
         private Vector3 direction;
         private Sprite laserTop;
-        private Sprite laserBottom;
         private Sprite laserLeft;
-        private Sprite laserRight;
-        private int laserAmount;
+        private bool fourLasers;
 
         /// <summary>
         /// Constructor for LaserEnemy
         /// </summary>
         /// <param name="startPos">Where enemy spawns</param>
-        /// <param name="numLasers">How many lasers it fires (1, 2 or 4)</param>
-        public LaserEnemy(Vector2 startPos, int numLasers)
+        /// <param name="doubleLasers">False for 2 lasers, true for 4</param>
+        public LaserEnemy(Vector2 startPos, bool doubleLasers)
         {
-            laserAmount = numLasers;
+            fourLasers = doubleLasers;
 
             Random setRotation = new Random();
             RotationAngle = setRotation.Next(0, 360);
@@ -54,7 +52,7 @@ namespace Template
             //Timers
             GM.eventM.AddTimer(tiShootCooldown = new Event(5f, "Shoot Cooldown"));
             GM.eventM.AddEventRaiseOnce(tiBirth = new Event(10f, "Birth timer"));
-            GM.eventM.AddTimer(tiDamageCooldown = new Event(0.1f, "Damage Cooldown"));
+            GM.eventM.AddTimer(tiDamageCooldown = new Event(0.05f, "Damage Cooldown"));
 
             //Callbacks
             UpdateCallBack += Move;
@@ -74,28 +72,28 @@ namespace Template
             GM.engineM.AddSprite(laserTop);
             laserTop.Frame.Define(Tex.Rectangle50by50);
             laserTop.SX = 0.1f;
-            laserTop.SY = 1000f;
+            laserTop.SY = 500f;
             laserTop.Visible = false;
             laserTop.Wash = Color.OrangeRed;
+            laserTop.Static = false;
             laserTop.CollisionActive = false;
             laserTop.CollisionPrimary = true;
             laserTop.PrologueCallBack += CollisionLaser;
-            //laserTop.Moving = true;
 
             //4 lasers
-            if (laserAmount == 4)
+            if (fourLasers)
             {
                 laserLeft = new Sprite();
                 GM.engineM.AddSprite(laserLeft);
                 laserLeft.Frame.Define(Tex.Rectangle50by50);
                 laserLeft.SX = 0.1f;
-                laserLeft.SY = 1000f;
+                laserLeft.SY = 500f;
                 laserLeft.Visible = false;
                 laserLeft.Wash = Color.OrangeRed;
+                laserLeft.Static = false;
                 laserLeft.CollisionActive = false;
                 laserLeft.CollisionPrimary = true;
                 laserLeft.PrologueCallBack += CollisionLaser;
-                //laserLeft.Moving = true;
             }
 
             //Prevent moving off screen
@@ -124,7 +122,7 @@ namespace Template
                 laserTop.CollisionAbandonResponse = true;
 
                 //4 lasers
-                if (laserAmount == 4)
+                if (fourLasers)
                 {
                     laserLeft.CollisionAbandonResponse = true;
                 }
@@ -134,7 +132,7 @@ namespace Template
             laserTop.Velocity = Vector3.Zero;
 
             //4 lasers
-            if (laserAmount == 4)
+            if (fourLasers)
             {
                 laserLeft.Velocity = Vector3.Zero;
             }
@@ -143,14 +141,15 @@ namespace Template
         private void Move()
         {
             //Do this for first 0.5 seconds of life
-            if(tiBirth.ElapsedSoFar < 0.5)
+            if (tiBirth.ElapsedSoFar < 0.5)
             {
                 RotationHelper.VelocityInThisDirection(this, direction, 500);
             }
             //Then do this
             else
             {
-                RotationVelocity = 45f;
+                if (fourLasers) RotationVelocity = 22.5f;
+                else RotationVelocity = 45f;
             }
             
             //For shooting
@@ -163,10 +162,10 @@ namespace Template
                 laserTop.Visible = true;
 
                 //4 lasers
-                if (laserAmount == 4)
+                if (fourLasers)
                 {
                     laserLeft.Position2D = Position2D;
-                    laserLeft.RotationAngle = RotationAngle + 270;
+                    laserLeft.RotationAngle = RotationAngle + 90;
                     laserLeft.Visible = true;
                 }
             }
@@ -177,14 +176,14 @@ namespace Template
                 //1 laser
                 laserTop.Wash = Color.Red;
                 laserTop.CollisionActive = true;
-                laserTop.SX = 0.2f;
+                laserTop.SX = 0.15f;
 
                 //4 lasers
-                if (laserAmount == 4)
+                if (fourLasers)
                 {
                     laserLeft.Wash = Color.Red;
                     laserLeft.CollisionActive = true;
-                    laserTop.SX = 0.2f;
+                    laserLeft.SX = 0.15f;
                 }
             }
 
@@ -193,6 +192,14 @@ namespace Template
             {
                 GM.eventM.AddEventRaiseOnce(tiBirth = new Event(10f, "Birth timer"));
 
+                direction = Vector3.Zero;
+
+                if (Position.X <= GM.screenSize.Center.X) direction.X += 1;
+                else direction.X -= 1;
+                if (Position.Y <= GM.screenSize.Center.Y) direction.Y += 1;
+                else direction.Y -= 1;
+                direction.Normalize();
+
                 //1 laser
                 laserTop.CollisionActive = false;
                 laserTop.Wash = Color.OrangeRed;
@@ -200,7 +207,7 @@ namespace Template
                 laserTop.SX = 0.1f;
 
                 //4 lasers
-                if (laserAmount == 4)
+                if (fourLasers)
                 {
                     laserLeft.CollisionActive = false;
                     laserLeft.Wash = Color.OrangeRed;
@@ -216,7 +223,7 @@ namespace Template
             laserTop.Kill();
 
             //4 lasers
-            if (laserAmount == 4)
+            if (fourLasers)
             {
                 laserLeft.Kill();
             }
