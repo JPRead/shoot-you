@@ -39,6 +39,7 @@ namespace Template.Game
             heightAbove = Convert.ToSingle(Math.Sqrt(Width * Width + Height * Height)) / 2;
             healthSprite.X = X;
             healthSprite.Y = Y + heightAbove - Height;
+            healthSprite.Layer += 2;
 
             //Callbacks
             PrologueCallBack += HealthBar;

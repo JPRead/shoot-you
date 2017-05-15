@@ -54,11 +54,6 @@ namespace Template
             GM.eventM.AddEventRaiseOnce(tiBirth = new Event(10f, "Birth timer"));
             GM.eventM.AddTimer(tiDamageCooldown = new Event(0.05f, "Damage Cooldown"));
 
-            //Callbacks
-            UpdateCallBack += Move;
-            FuneralCallBack += KillSprites;
-            CollisionCallBack += Collision;
-
             //Determining initial movement direction
             if (startPos.X <= GM.screenSize.Center.X) direction.X += 1;
             else direction.X -= 1;
@@ -72,10 +67,11 @@ namespace Template
             GM.engineM.AddSprite(laserTop);
             laserTop.Frame.Define(Tex.Rectangle50by50);
             laserTop.SX = 0.1f;
-            laserTop.SY = 500f;
+            laserTop.SY = 100f;
             laserTop.Visible = false;
             laserTop.Wash = Color.OrangeRed;
             laserTop.Static = false;
+            laserTop.Shape = Shape.rectangle;
             laserTop.CollisionActive = false;
             laserTop.CollisionPrimary = true;
             laserTop.PrologueCallBack += CollisionLaser;
@@ -87,10 +83,12 @@ namespace Template
                 GM.engineM.AddSprite(laserLeft);
                 laserLeft.Frame.Define(Tex.Rectangle50by50);
                 laserLeft.SX = 0.1f;
-                laserLeft.SY = 500f;
+                laserLeft.SY = 100f;
                 laserLeft.Visible = false;
                 laserLeft.Wash = Color.OrangeRed;
                 laserLeft.Static = false;
+                laserLeft.Shape = Shape.rectangle;
+                
                 laserLeft.CollisionActive = false;
                 laserLeft.CollisionPrimary = true;
                 laserLeft.PrologueCallBack += CollisionLaser;
@@ -100,6 +98,11 @@ namespace Template
             Moving = true;
             LimitInitialise();
             Limit.ViewPortAction(LimitAction.bounce);
+
+            //Callbacks
+            UpdateCallBack += Move;
+            FuneralCallBack += KillSprites;
+            PrologueCallBack += Collision;
         }
 
         private void Collision(Sprite hit)
@@ -107,16 +110,16 @@ namespace Template
             Velocity = Vector3.Zero;
         }
 
-        private void CollisionLaser(Sprite hit)
+        private void CollisionLaser(Sprite laserHit)
         {
-            if (hit == GameSetup.PlayerChar)
+            if (laserHit == GameSetup.PlayerChar)
             {
                 if (GM.eventM.Elapsed(tiDamageCooldown))
                 {
                     GameSetup.PlayerChar.Health -= 1;
                 }
             }
-            if(hit is Bullet)
+            if(laserHit is Bullet)
             {
                 //1 laser
                 laserTop.CollisionAbandonResponse = true;
