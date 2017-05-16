@@ -71,28 +71,39 @@ namespace Template
             //Every 40 seconds
             if (((int)tiSpawnTimer.ElapsedSoFar % 40) == 0)
             {
-                LaserEnemy laserEnemy = new LaserEnemy(spawnPos, true);
+                //LaserEnemy laserEnemy = new LaserEnemy(spawnPos, false);
             }
             else
             {
                 //Every 20 seconds
                 if (((int)tiSpawnTimer.ElapsedSoFar % 20) == 0)
                 {
-                    LaserEnemy laserEnemy = new LaserEnemy(spawnPos, false);
+                    TurretEnemy turretEnemy = new TurretEnemy(spawnPos, true);
                 }
                 else
                 {
-                    //Every 5 seconds
-                    if (((int)tiSpawnTimer.ElapsedSoFar % 5) == 0)
+                    //Every 10 seconds
+                    if (((int)tiSpawnTimer.ElapsedSoFar % 15) == 0)
                     {
-                        //StraferEnemy straferEnemy = new StraferEnemy(spawnPos);
+                        TurretEnemy turretEnemy = new TurretEnemy(spawnPos, false);
+                        
                     }
                     else
                     {
-                        //Every 1 second
-                        if (((int)tiSpawnTimer.ElapsedSoFar % 1) == 0)
                         {
-                            //ChargerEnemy chargerEnemy = new ChargerEnemy(spawnPos);
+                            //Every 5 seconds
+                            if (((int)tiSpawnTimer.ElapsedSoFar % 5) == 0)
+                            {
+                                StraferEnemy straferEnemy = new StraferEnemy(spawnPos);
+                            }
+                            else
+                            {
+                                //Every 1 second
+                                if (((int)tiSpawnTimer.ElapsedSoFar % 1) == 0)
+                                {
+                                    ChargerEnemy chargerEnemy = new ChargerEnemy(spawnPos);
+                                }
+                            }
                         }
                     }
                 }

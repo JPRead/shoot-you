@@ -7,6 +7,7 @@ namespace Template.Game
     internal class Bullet : Sprite
     {
         private Sprite player;
+        private int damage;
 
         internal Sprite Player
         {
@@ -21,8 +22,17 @@ namespace Template.Game
             //}
         }
 
-        public Bullet(Sprite player, Vector2 fireAngle, float bulletSpeed)
+        /// <summary>
+        /// Constructor for bullet class
+        /// </summary>
+        /// <param name="player">The object that fired the bullet</param>
+        /// <param name="fireAngle">2D vector to travel towards</param>
+        /// <param name="bulletSpeed">Speed of bullet</param>
+        /// <param name="bulletDamage">Damage on hit</param>
+        public Bullet(Sprite player, Vector2 fireAngle, float bulletSpeed, int bulletDamage)
         {
+            damage = bulletDamage;
+
             //Gets faster over time!
             //this.Friction = -0.5f;
             this.player = player;
@@ -36,7 +46,7 @@ namespace Template.Game
 
             //get player attributes
             Wash = player.Wash;
-            RotationAngle = player.RotationAngle;
+            //RotationAngle = player.RotationAngle;
 
             //set postion of bullet and give velocity
             X = player.Centre.X;
@@ -81,7 +91,7 @@ namespace Template.Game
                 //don't shoot yourself
                 if (player != hit)
                 {
-                    GameSetup.PlayerChar.Health -= 10;
+                    GameSetup.PlayerChar.Health -= damage;
                     GM.audioM.PlayEffect("explode");
 
                     Kill();
@@ -99,7 +109,7 @@ namespace Template.Game
             if(hit is Enemy)
             {
                 Enemy enemy = (Enemy)hit;
-                enemy.Health -= 10;
+                enemy.Health -= damage;
                 Kill();
                 if (enemy.Health <= 0)
                 {

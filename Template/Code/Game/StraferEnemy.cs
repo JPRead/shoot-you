@@ -87,7 +87,7 @@ namespace Template
                 if (GM.eventM.Elapsed(tiShootCooldown))
                 {
                     //create bullet and pass reference to player and angle
-                    new Bullet(this, playerPos, 1000f);
+                    new Bullet(this, playerPos, 1000f, 10);
                 }
             }
         }

@@ -209,7 +209,7 @@ namespace Template.Game
             if ((GM.inputM.KeyDown(Shoot) || GM.inputM.MouseLeftButtonHeld()) && GM.eventM.Elapsed(tiShootCooldown))
             {
                 //create bullet and pass reference to player and angle
-                new Bullet(this, aimAngle, 1500f);
+                new Bullet(this, aimAngle, 1500f, 10);
             }
 
             //For boosting
