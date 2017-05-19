@@ -31,7 +31,8 @@ namespace Template
             Random setRotation = new Random();
             RotationAngle = setRotation.Next(0, 360);
 
-            //Set health
+            //Set properties
+            KillPoints = 10;
             Health = 100;
 
             //Set collisions

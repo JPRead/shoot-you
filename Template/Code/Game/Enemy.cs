@@ -11,6 +11,7 @@ namespace Template.Game
     internal class Enemy : Sprite
     {
         private int health;
+        private int killPoints;
         private Sprite healthSprite;
         private float heightAbove;
 
@@ -24,6 +25,19 @@ namespace Template.Game
             set
             {
                 health = value;
+            }
+        }
+
+        public int KillPoints
+        {
+            get
+            {
+                return killPoints;
+            }
+
+            set
+            {
+                killPoints = value;
             }
         }
 
@@ -44,7 +58,7 @@ namespace Template.Game
             //Callbacks
             PrologueCallBack += HealthBar;
             UpdateCallBack += Update;
-            FuneralCallBack += KillHealthBar;
+            FuneralCallBack += Funeral;
         }
 
         private void Update()
@@ -77,8 +91,9 @@ namespace Template.Game
         /// <summary>
         /// Called on funeral
         /// </summary>
-        private void KillHealthBar()
+        private void Funeral()
         {
+            GameSetup.EnemySpawnSystem.Score += killPoints;
             healthSprite.Kill();
         }
     }

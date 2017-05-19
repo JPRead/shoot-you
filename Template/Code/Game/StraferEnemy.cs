@@ -18,6 +18,8 @@ namespace Template
         public StraferEnemy(Vector2 startPos)
         {
             //Set health
+            //Set properties
+            KillPoints = 2;
             Health = 30;
 
             //Set collisions

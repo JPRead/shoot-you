@@ -18,14 +18,38 @@ namespace Template
     {
         private Event tiSpawnTimer;
         private Random r;
+        private Random enemySelector;
         private int spawnX;
         private int spawnY;
-        //private Random rY;
+        private int score;
+
+        //Spawn score thresholds
+        private int straferSpawn = 4;
+        private int turretSpawn = 16;
+        private int laserSpawn = 64;
+
+        //Spawn chances
+        private int chargerChance = 100;
+        private int straferChance = 5;
+        private int turretChance = 15;
+        private int laserChance = 30;
+
+        public int Score
+        {
+            get
+            {
+                return score;
+            }
+
+            set
+            {
+                score = value;
+            }
+        }
 
         public EnemySpawnSystem()
         {
             r = new Random();
-            //rY = new Random();
             GM.engineM.AddSprite(this);
             GM.eventM.AddTimer(tiSpawnTimer = new Event(600, "Round timer"));
             TimerInitialise();
@@ -67,7 +91,10 @@ namespace Template
                 spawnX = r.Next(0, GM.screenSize.Right);
                 spawnPos = new Vector2(spawnX, spawnY);
             }
-
+            
+            string enemyType = GetEnemyType();
+            //Implementation for checking type and spawning the selected type
+            
             //Every 40 seconds
             if (((int)tiSpawnTimer.ElapsedSoFar % 40) == 0)
             {
@@ -108,6 +135,22 @@ namespace Template
                     }
                 }
             }
+        }
+
+        private string GetEnemyType()
+        {
+            int totalChance = 100;
+            if(score > straferSpawn) totalChance += straferChance;
+            if (score > turretSpawn) totalChance += turretChance;
+            if (score > laserSpawn) totalChance += laserChance;
+
+            int chance = enemySelector.Next(totalChance);
+            if(chance <= chargerChance) return "charger";
+            if (chance <= turretChance) return "turret";
+            if (chance <= laserChance) return "laser";
+
+            //Incase something goes wrong
+            return "none";
         }
     }
 }

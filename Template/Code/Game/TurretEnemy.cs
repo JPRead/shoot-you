@@ -28,7 +28,8 @@ namespace Template
             Random setRotation = new Random();
             RotationAngle = setRotation.Next(0, 360);
 
-            //Set health
+            //Set properties
+            KillPoints = 5;
             Health = 100;
 
             //Set collisions
@@ -66,6 +67,12 @@ namespace Template
             //Callbacks
             UpdateCallBack += Move;
             PrologueCallBack += Collision;
+            EpilogueCallBack += AfterCollision;
+        }
+
+        private void AfterCollision(Sprite hit)
+        {
+            Velocity = Vector3.Zero;
         }
 
         private void Collision(Sprite hit)
@@ -110,8 +117,8 @@ namespace Template
                         Vector2 left = new Vector2(left3d.X, left3d.Y);
                         Vector2 right = new Vector2(right3d.X, right3d.Y);
 
-                        new Bullet(this, left, 1500f, 2);
-                        new Bullet(this, right, 1500f, 2);
+                        new Bullet(this, left, 1000f, 2);
+                        new Bullet(this, right, 1000f, 2);
                     }
                 }
             }

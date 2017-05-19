@@ -22,6 +22,7 @@ namespace Template.Game
         private int health;
         private Sprite gunSprite;
         private Sprite directionSprite;
+        private int playerScore;
 
         public int Health
         {
@@ -33,6 +34,19 @@ namespace Template.Game
             set
             {
                 health = value;
+            }
+        }
+
+        public int PlayerScore
+        {
+            get
+            {
+                return playerScore;
+            }
+
+            set
+            {
+                playerScore = value;
             }
         }
 
@@ -94,6 +108,18 @@ namespace Template.Game
 
             //Timers
             GM.eventM.AddTimer(tiShootCooldown = new Event(0.1f, "Shoot Cooldown"));
+
+            //Funeral
+            FuneralCallBack += Funeral;
+        }
+
+        //Update score on death
+        private void Funeral()
+        {
+            if(playerScore > GM.BestScore)
+            {
+                GM.BestScore = playerScore;
+            }
         }
 
         //Stopping collisions with own bullets

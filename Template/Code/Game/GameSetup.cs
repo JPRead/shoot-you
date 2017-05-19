@@ -56,12 +56,6 @@ namespace Template.Game
             //create players and generate level layout
             playerChar = new PlayerOne();
 
-            //Remove when enemy generation implemented
-            //new ChargerEnemy(new Vector2(100, 100));
-
-            //Enemy generation
-            enemySpawnSystem = new EnemySpawnSystem();
-
             //Create cursor and places centre on mouse position
             Cursor cursor = new Cursor();
 
@@ -73,6 +67,9 @@ namespace Template.Game
 
             //listen out for player death to manage lives and score
             MessageBus.Instance.Subscribe(ExtraMessageTypes.PlayerDestroyed, PlayerKilled);
+
+            //Enemy generation
+            enemySpawnSystem = new EnemySpawnSystem();
         }
 
         /// <summary>
@@ -128,8 +125,9 @@ namespace Template.Game
 
             //get game time and check for high score (quickest time)
             float timeTaken = tiGameTimer.ElapsedSoFar;
-            if (timeTaken < GM.BestScore)
-                GM.BestScore = timeTaken;
+            if (EnemySpawnSystem.Score > GM.BestScore)
+                GM.BestScore = EnemySpawnSystem.Score;
+            
 
             //stop timer
             GM.eventM.Remove(tiGameTimer);
@@ -165,8 +163,12 @@ namespace Template.Game
             GM.textM.Draw(FontBank.arcadePixel, "HEALTH:", GM.screenSize.Left + 175, GM.screenSize.Bottom - 40, TextAtt.BottomLeft);
             GM.textM.Draw(FontBank.arcadePixel, healthBar, GM.screenSize.Left + 250, GM.screenSize.Bottom - 40, TextAtt.BottomLeft);
 
+            //Timer
             if (PlayerChar.Health <= 0) tiGameTimer.Paused = true;
-            GM.textM.Draw(FontBank.arcadePixel, "Time: " + Convert.ToString((int)tiGameTimer.ElapsedSoFar), GM.screenSize.Right - 175, GM.screenSize.Bottom - 40, TextAtt.BottomLeft);
+            GM.textM.Draw(FontBank.arcadePixel, " Time: " + Convert.ToString((int)tiGameTimer.ElapsedSoFar), GM.screenSize.Right - 175, GM.screenSize.Bottom - 40, TextAtt.BottomLeft);
+
+            //Score
+            GM.textM.Draw(FontBank.arcadePixel, "Score: " + Convert.ToString(EnemySpawnSystem.Score), GM.screenSize.Right - 175, GM.screenSize.Bottom - 30, TextAtt.BottomLeft);
 
             //let player quit
             if (GM.inputM.KeyPressed(Keys.Escape))

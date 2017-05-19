@@ -13,7 +13,8 @@ namespace Template
     {
         public ChargerEnemy(Vector2 startPos)
         {
-            //Set health
+            //Set properties
+            KillPoints = 1;
             Health = 50;
 
             //Set collisions
