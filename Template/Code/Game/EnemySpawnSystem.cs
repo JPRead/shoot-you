@@ -29,10 +29,10 @@ namespace Template
         private int laserSpawn = 64;
 
         //Spawn chances
-        private int chargerChance = 100;
-        private int straferChance = 5;
-        private int turretChance = 15;
-        private int laserChance = 30;
+        private int chargerChance = 120;
+        private int straferChance = 40;
+        private int turretChance = 20;
+        private int laserChance = 10;
 
         public int Score
         {
