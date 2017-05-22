@@ -113,13 +113,13 @@ namespace Template
 
         private void CollisionLaser(Sprite laserHit)
         {
-            if (laserHit == GameSetup.PlayerChar)
-            {
-                if (GM.eventM.Elapsed(tiDamageCooldown))
-                {
-                    GameSetup.PlayerChar.Health -= 1;
-                }
-            }
+            //if (laserHit == GameSetup.PlayerChar)
+            //{
+            //    if (GM.eventM.Elapsed(tiDamageCooldown))
+            //    {
+            //        GameSetup.PlayerChar.Health -= 1;
+            //    }
+            //}
             if(laserHit is Bullet)
             {
                 //1 laser
@@ -182,14 +182,41 @@ namespace Template
                 laserTop.CollisionActive = true;
                 laserTop.SX = 0.15f;
 
-                //4 lasers
-                if (fourLasers)
+                //Checking for collisions
+
+                Ray rayTop = new Ray(Position, Position + direction);
+                Ray rayBottom = new Ray(Position, Position - direction);
+
+                Vector3 min = new Vector3(GameSetup.PlayerChar.Left, GameSetup.PlayerChar.Bottom, -1);
+                Vector3 max = new Vector3(GameSetup.PlayerChar.Right, GameSetup.PlayerChar.Top, 1);
+                BoundingBox playerBox = new BoundingBox(min, max);
+
+                if ((rayTop.Intersects(playerBox) != null || rayBottom.Intersects(playerBox) != null)  && GM.eventM.Elapsed(tiDamageCooldown))
+                {
+                    GameSetup.PlayerChar.Health -= 1;
+                }
+            }
+            //4 lasers
+            if (fourLasers)
                 {
                     laserLeft.Wash = Color.Red;
                     laserLeft.CollisionActive = true;
                     laserLeft.SX = 0.15f;
-                }
+
+                    Ray rayLeft = new Ray(Position, new Vector3(Position.X + direction.X, Position.Y - direction.Y, 0));
+                    Ray rayRight = new Ray(Position, new Vector3(Position.X - direction.X, Position.Y + direction.Y, 0));
+
+                    Vector3 min = new Vector3(GameSetup.PlayerChar.Left, GameSetup.PlayerChar.Bottom, -1);
+                    Vector3 max = new Vector3(GameSetup.PlayerChar.Right, GameSetup.PlayerChar.Top, 1);
+                    BoundingBox playerBox = new BoundingBox(min, max);
+
+                    if ((rayLeft.Intersects(playerBox) != null || rayRight.Intersects(playerBox) != null) && GM.eventM.Elapsed(tiDamageCooldown))
+                    {
+                        GameSetup.PlayerChar.Health -= 1;
+                    }
             }
+
+
 
             //Every 10 seconds
             if(tiBirth.ElapsedSoFar >= 10)
