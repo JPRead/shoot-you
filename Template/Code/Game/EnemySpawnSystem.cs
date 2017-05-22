@@ -29,10 +29,11 @@ namespace Template
         private int laserSpawn = 64;
 
         //Spawn chances
-        private int chargerChance = 120;
-        private int straferChance = 40;
-        private int turretChance = 20;
-        private int laserChance = 10;
+        private int chargerChance = 200;
+        private int straferChance = 300;
+        private int turretChance = 350;
+        private int doubleTurretChance = 400;
+        private int laserChance = 425;
 
         public int Score
         {
@@ -91,66 +92,79 @@ namespace Template
                 spawnX = r.Next(0, GM.screenSize.Right);
                 spawnPos = new Vector2(spawnX, spawnY);
             }
+
+            enemySelector = new Random();
+            EnemySpawner(spawnPos);
             
-            string enemyType = GetEnemyType();
-            //Implementation for checking type and spawning the selected type
-            
-            //Every 40 seconds
-            if (((int)tiSpawnTimer.ElapsedSoFar % 40) == 0)
-            {
-                //LaserEnemy laserEnemy = new LaserEnemy(spawnPos, false);
-            }
+            ////Every 40 seconds
+            //if (((int)tiSpawnTimer.ElapsedSoFar % 40) == 0)
+            //{
+            //    //LaserEnemy laserEnemy = new LaserEnemy(spawnPos, false);
+            //}
+            //else
+            //{
+            //    //Every 20 seconds
+            //    if (((int)tiSpawnTimer.ElapsedSoFar % 20) == 0)
+            //    {
+            //        TurretEnemy turretEnemy = new TurretEnemy(spawnPos, true);
+            //    }
+            //    else
+            //    {
+            //        //Every 10 seconds
+            //        if (((int)tiSpawnTimer.ElapsedSoFar % 15) == 0)
+            //        {
+            //            TurretEnemy turretEnemy = new TurretEnemy(spawnPos, false);
+                        
+            //        }
+            //        else
+            //        {
+            //            {
+            //                //Every 5 seconds
+            //                if (((int)tiSpawnTimer.ElapsedSoFar % 5) == 0)
+            //                {
+            //                    StraferEnemy straferEnemy = new StraferEnemy(spawnPos);
+            //                }
+            //                else
+            //                {
+            //                    //Every 1 second
+            //                    if (((int)tiSpawnTimer.ElapsedSoFar % 1) == 0)
+            //                    {
+            //                        ChargerEnemy chargerEnemy = new ChargerEnemy(spawnPos);
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+        }
+
+        private void EnemySpawner(Vector2 spawnPos)
+        {
+            int totalChance = 100;
+            if (score > straferSpawn) totalChance = straferChance;
+            if (score > turretSpawn) totalChance = turretChance;
+            if (score > doubleTurretChance) totalChance = doubleTurretChance;
+            if (score > laserSpawn) totalChance = laserChance;
+
+            int chance = enemySelector.Next(totalChance);
+
+            if (chance <= chargerChance) { ChargerEnemy chargerEnemy = new ChargerEnemy(spawnPos); }
             else
             {
-                //Every 20 seconds
-                if (((int)tiSpawnTimer.ElapsedSoFar % 20) == 0)
-                {
-                    TurretEnemy turretEnemy = new TurretEnemy(spawnPos, true);
-                }
+                if (chance <= straferChance) { StraferEnemy straferEnemy = new StraferEnemy(spawnPos); }
                 else
                 {
-                    //Every 10 seconds
-                    if (((int)tiSpawnTimer.ElapsedSoFar % 15) == 0)
-                    {
-                        TurretEnemy turretEnemy = new TurretEnemy(spawnPos, false);
-                        
-                    }
+                    if (chance <= turretChance) { TurretEnemy turretEnemy = new TurretEnemy(spawnPos, false); }
                     else
                     {
+                        if (chance <= doubleTurretChance) { TurretEnemy turretEnemy = new TurretEnemy(spawnPos, true); }
+                        else
                         {
-                            //Every 5 seconds
-                            if (((int)tiSpawnTimer.ElapsedSoFar % 5) == 0)
-                            {
-                                StraferEnemy straferEnemy = new StraferEnemy(spawnPos);
-                            }
-                            else
-                            {
-                                //Every 1 second
-                                if (((int)tiSpawnTimer.ElapsedSoFar % 1) == 0)
-                                {
-                                    ChargerEnemy chargerEnemy = new ChargerEnemy(spawnPos);
-                                }
-                            }
+                            if (chance <= laserChance) { LaserEnemy laserEnemy = new LaserEnemy(spawnPos, false); }
                         }
                     }
                 }
             }
-        }
-
-        private string GetEnemyType()
-        {
-            int totalChance = 100;
-            if(score > straferSpawn) totalChance += straferChance;
-            if (score > turretSpawn) totalChance += turretChance;
-            if (score > laserSpawn) totalChance += laserChance;
-
-            int chance = enemySelector.Next(totalChance);
-            if(chance <= chargerChance) return "charger";
-            if (chance <= turretChance) return "turret";
-            if (chance <= laserChance) return "laser";
-
-            //Incase something goes wrong
-            return "none";
         }
     }
 }
