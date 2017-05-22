@@ -88,8 +88,7 @@ namespace Template.Game
             }
             if (hit is Player)
             {
-                //don't shoot yourself
-                if (player != hit)
+                if (player != hit && GameSetup.PlayerChar.Invulnerable == false)
                 {
                     GameSetup.PlayerChar.Health -= damage;
                     GM.audioM.PlayEffect("explode");

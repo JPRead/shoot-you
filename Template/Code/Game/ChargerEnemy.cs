@@ -59,7 +59,7 @@ namespace Template
         private void Hit(Sprite hit)
         {
             //Damage player upon hit
-            if(hit == GameSetup.PlayerChar)
+            if(hit == GameSetup.PlayerChar && GameSetup.PlayerChar.Invulnerable == false)
             {
                 GameSetup.PlayerChar.Health -= 10;
                 if (GameSetup.PlayerChar.Health <= 0) GameSetup.PlayerChar.Kill();

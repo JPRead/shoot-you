@@ -23,6 +23,7 @@ namespace Template.Game
         private Sprite gunSprite;
         private Sprite directionSprite;
         private int playerScore;
+        private bool invulnerable;
 
         public int Health
         {
@@ -50,6 +51,19 @@ namespace Template.Game
             }
         }
 
+        public bool Invulnerable
+        {
+            get
+            {
+                return invulnerable;
+            }
+
+            set
+            {
+                invulnerable = value;
+            }
+        }
+
         public Player(Vector2 startPos, Color col)
         {
             //Creating gun sprite
@@ -70,6 +84,7 @@ namespace Template.Game
 
             //Set health
             Health = 100;
+            invulnerable = false;
 
             //set management of sprite and graphic
             GM.engineM.AddSprite(this);
@@ -250,12 +265,16 @@ namespace Template.Game
 
                 Friction = 0f;
                 Velocity += dNorm * 800;
+                invulnerable = true;
+                Wash = Color.LightGreen;
             }
 
             //Resetting dodge delay for displaying
             if(tiBoostDelay != null && tiBoostDelay.ElapsedSoFar > 0.25f)
             {
                 Friction = 10f;
+                invulnerable = false;
+                Wash = Color.LimeGreen;
             }
         }
 
