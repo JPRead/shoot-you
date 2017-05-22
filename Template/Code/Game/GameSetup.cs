@@ -160,11 +160,10 @@ namespace Template.Game
             {
                 healthBar += "X";
             }
-            GM.textM.Draw(FontBank.arcadePixel, "HEALTH:", GM.screenSize.Left + 175, GM.screenSize.Bottom - 40, TextAtt.BottomLeft);
-            GM.textM.Draw(FontBank.arcadePixel, healthBar, GM.screenSize.Left + 250, GM.screenSize.Bottom - 40, TextAtt.BottomLeft);
+            GM.textM.Draw(FontBank.arcadePixel, "Health: " + healthBar, GM.screenSize.Left + 175, GM.screenSize.Bottom - 40, TextAtt.BottomLeft);
 
             //Timer
-            if (PlayerChar.Health <= 0) tiGameTimer.Paused = true;
+            if (PlayerChar.Health <= 0) tiGameTimer.KillMe();
             GM.textM.Draw(FontBank.arcadePixel, " Time: " + Convert.ToString((int)tiGameTimer.ElapsedSoFar), GM.screenSize.Right - 175, GM.screenSize.Bottom - 40, TextAtt.BottomLeft);
 
             //Score

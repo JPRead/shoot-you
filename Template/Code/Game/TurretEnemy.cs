@@ -30,7 +30,7 @@ namespace Template
 
             //Set properties
             KillPoints = 5;
-            Health = 100;
+            Health = 50;
 
             //Set collisions
             CollisionActive = true;

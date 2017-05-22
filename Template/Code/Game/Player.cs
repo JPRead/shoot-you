@@ -131,6 +131,8 @@ namespace Template.Game
         //Update score on death
         private void Funeral()
         {
+            gunSprite.Kill();
+            directionSprite.Kill();
             if(playerScore > GM.BestScore)
             {
                 GM.BestScore = playerScore;
