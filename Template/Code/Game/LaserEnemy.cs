@@ -71,10 +71,8 @@ namespace Template
             laserTop.SY = 100f;
             laserTop.Visible = false;
             laserTop.Wash = Color.OrangeRed;
-            laserTop.Static = false;
             laserTop.Shape = Shape.rectangle;
-            laserTop.CollisionActive = false;
-            laserTop.CollisionPrimary = true;
+            laserTop.Static = false;
             laserTop.PrologueCallBack += CollisionLaser;
 
             //4 lasers
@@ -87,11 +85,8 @@ namespace Template
                 laserLeft.SY = 100f;
                 laserLeft.Visible = false;
                 laserLeft.Wash = Color.OrangeRed;
-                laserLeft.Static = false;
                 laserLeft.Shape = Shape.rectangle;
-                
-                laserLeft.CollisionActive = false;
-                laserLeft.CollisionPrimary = true;
+                laserLeft.Static = false;
                 laserLeft.PrologueCallBack += CollisionLaser;
             }
 
@@ -106,40 +101,21 @@ namespace Template
             PrologueCallBack += Collision;
         }
 
+        private void CollisionLaser(Sprite hit)
+        {
+            //laserTop.Velocity = Vector3.Zero;
+            //laserTop.Position = Position;
+
+            //if (fourLasers)
+            //{
+            //    laserLeft.Velocity = Vector3.Zero;
+            //    laserLeft.Position = Position;
+            //}
+        }
+
         private void Collision(Sprite hit)
         {
             Velocity = Vector3.Zero;
-        }
-
-        private void CollisionLaser(Sprite laserHit)
-        {
-            //if (laserHit == GameSetup.PlayerChar)
-            //{
-            //    if (GM.eventM.Elapsed(tiDamageCooldown))
-            //    {
-            //        GameSetup.PlayerChar.Health -= 1;
-            //    }
-            //}
-            if(laserHit is Bullet)
-            {
-                //1 laser
-                laserTop.CollisionAbandonResponse = true;
-
-                //4 lasers
-                if (fourLasers)
-                {
-                    laserLeft.CollisionAbandonResponse = true;
-                }
-            }
-
-            //1 laser
-            laserTop.Velocity = Vector3.Zero;
-
-            //4 lasers
-            if (fourLasers)
-            {
-                laserLeft.Velocity = Vector3.Zero;
-            }
         }
 
         private void Move()
@@ -147,13 +123,17 @@ namespace Template
             //Do this for first 0.5 seconds of life
             if (tiBirth.ElapsedSoFar < 0.5)
             {
-                RotationHelper.VelocityInThisDirection(this, direction, 500);
+                RotationHelper.FaceDirection(this, direction, DirectionAccuracy.free, 10);
+                RotationHelper.VelocityInCurrentDirection(this, 500, 0);
             }
             //Then do this
             else
             {
-                if (fourLasers) RotationVelocity = 22.5f;
-                else RotationVelocity = 45f;
+                if (tiBirth.ElapsedSoFar < 10)
+                {
+                    if (fourLasers) RotationVelocity = 22.5f;
+                    else RotationVelocity = 45f;
+                }
             }
             
             //For shooting
@@ -179,44 +159,35 @@ namespace Template
             {
                 //1 laser
                 laserTop.Wash = Color.Red;
-                laserTop.CollisionActive = true;
-                laserTop.SX = 0.15f;
+                laserTop.SX = 0.2f;
 
                 //Checking for collisions
+                Ray rayTop = new Ray(Position, RotationHelper.MyDirection(this, 0));
+                Ray rayBottom = new Ray(Position, RotationHelper.MyDirection(this, 180));
+                
+                BoundingSphere playerSphere = new BoundingSphere(GameSetup.PlayerChar.Position, (GameSetup.PlayerChar.Right - GameSetup.PlayerChar.Left));
 
-                Ray rayTop = new Ray(Position, Position + direction);
-                Ray rayBottom = new Ray(Position, Position - direction);
-
-                Vector3 min = new Vector3(GameSetup.PlayerChar.Left, GameSetup.PlayerChar.Bottom, -1);
-                Vector3 max = new Vector3(GameSetup.PlayerChar.Right, GameSetup.PlayerChar.Top, 1);
-                BoundingBox playerBox = new BoundingBox(min, max);
-
-                if ((rayTop.Intersects(playerBox) != null || rayBottom.Intersects(playerBox) != null)  && GM.eventM.Elapsed(tiDamageCooldown))
+                if ((rayTop.Intersects(playerSphere) != null || rayBottom.Intersects(playerSphere) != null) && GM.eventM.Elapsed(tiDamageCooldown))
                 {
-                    GameSetup.PlayerChar.Health -= 1;
+                    GameSetup.PlayerChar.Health -= 2;
+                    if (GameSetup.PlayerChar.Health <= 0) GameSetup.PlayerChar.Kill();
                 }
-            }
-            //4 lasers
-            if (fourLasers)
+                //4 lasers
+                if (fourLasers)
                 {
                     laserLeft.Wash = Color.Red;
-                    laserLeft.CollisionActive = true;
-                    laserLeft.SX = 0.15f;
+                    laserLeft.SX = 0.2f;
 
-                    Ray rayLeft = new Ray(Position, new Vector3(Position.X + direction.X, Position.Y - direction.Y, 0));
-                    Ray rayRight = new Ray(Position, new Vector3(Position.X - direction.X, Position.Y + direction.Y, 0));
+                    Ray rayLeft = new Ray(Position, RotationHelper.MyDirection(this, 90));
+                    Ray rayRight = new Ray(Position, RotationHelper.MyDirection(this, 270));
 
-                    Vector3 min = new Vector3(GameSetup.PlayerChar.Left, GameSetup.PlayerChar.Bottom, -1);
-                    Vector3 max = new Vector3(GameSetup.PlayerChar.Right, GameSetup.PlayerChar.Top, 1);
-                    BoundingBox playerBox = new BoundingBox(min, max);
-
-                    if ((rayLeft.Intersects(playerBox) != null || rayRight.Intersects(playerBox) != null) && GM.eventM.Elapsed(tiDamageCooldown))
+                    if ((rayLeft.Intersects(playerSphere) != null || rayRight.Intersects(playerSphere) != null) && GM.eventM.Elapsed(tiDamageCooldown))
                     {
-                        GameSetup.PlayerChar.Health -= 1;
+                        GameSetup.PlayerChar.Health -= 2;
+                        if (GameSetup.PlayerChar.Health <= 0) GameSetup.PlayerChar.Kill();
                     }
+                }
             }
-
-
 
             //Every 10 seconds
             if(tiBirth.ElapsedSoFar >= 10)
@@ -232,7 +203,6 @@ namespace Template
                 direction.Normalize();
 
                 //1 laser
-                laserTop.CollisionActive = false;
                 laserTop.Wash = Color.OrangeRed;
                 laserTop.Visible = false;
                 laserTop.SX = 0.1f;
@@ -240,7 +210,6 @@ namespace Template
                 //4 lasers
                 if (fourLasers)
                 {
-                    laserLeft.CollisionActive = false;
                     laserLeft.Wash = Color.OrangeRed;
                     laserLeft.Visible = false;
                     laserLeft.SX = 0.1f;

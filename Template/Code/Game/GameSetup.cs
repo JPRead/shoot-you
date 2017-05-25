@@ -169,6 +169,11 @@ namespace Template.Game
             //Score
             GM.textM.Draw(FontBank.arcadePixel, "Score: " + Convert.ToString(EnemySpawnSystem.Score), GM.screenSize.Right - 175, GM.screenSize.Bottom - 30, TextAtt.BottomLeft);
 
+            //Debug
+            //string debugText = "";
+            //if (playerChar.DebugMode) { debugText = "Debug"; }
+            //GM.textM.Draw(FontBank.arcadePixel, debugText, GM.screenSize.Left + 175, GM.screenSize.Top + 40, TextAtt.TopLeft);
+
             //let player quit
             if (GM.inputM.KeyPressed(Keys.Escape))
             {

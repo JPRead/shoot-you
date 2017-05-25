@@ -33,7 +33,8 @@ namespace Template
         private int straferChance = 2400;
         private int turretChance = 2500;
         private int doubleTurretChance = 2550;
-        private int laserChance = 2575;
+        private int laserChance = 2650;
+        private int doubleLaserChance = 2700;
 
         public int Score
         {
@@ -161,6 +162,10 @@ namespace Template
                         else
                         {
                             if (chance <= laserChance) { LaserEnemy laserEnemy = new LaserEnemy(spawnPos, false); }
+                            else
+                            {
+                                if (chance <= doubleLaserChance) { LaserEnemy laserEnemy = new LaserEnemy(spawnPos, true); }
+                            }
                         }
                     }
                 }

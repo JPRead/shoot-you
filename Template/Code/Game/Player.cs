@@ -24,6 +24,7 @@ namespace Template.Game
         private Sprite directionSprite;
         private int playerScore;
         private bool invulnerable;
+        private bool debugMode;
 
         public int Health
         {
@@ -64,8 +65,23 @@ namespace Template.Game
             }
         }
 
+        public bool DebugMode
+        {
+            get
+            {
+                return debugMode;
+            }
+
+            set
+            {
+                debugMode = value;
+            }
+        }
+
         public Player(Vector2 startPos, Color col)
         {
+            debugMode = false;
+
             //Creating gun sprite
             gunSprite = new Sprite();
             GM.engineM.AddSprite(gunSprite);
@@ -86,16 +102,15 @@ namespace Template.Game
             Health = 100;
             invulnerable = false;
 
-            //set management of sprite and graphic
+            //Set management of sprite and graphic
             GM.engineM.AddSprite(this);
             Frame.Define(Tex.Circle32by32);
 
-            //set position and colour
+            //Set position and colour
             Position2D = startPos;
             Wash = col;
-            //SY = 1.25f;
 
-            //setup controls
+            //Setup controls
             UpdateCallBack += Move;
             UpdateCallBack += Display;
 
@@ -214,6 +229,25 @@ namespace Template.Game
             gunSprite.Position2D = Position2D + (direction * 15);
             Vector2 currentPosition = Position2D;
 
+            //For console
+            if (GM.inputM.KeyPressed(Keys.C))
+            {
+                debugMode = true;
+            }
+            if (debugMode == true)
+            {
+                GM.textM.Draw(FontBank.arcadePixel, "Debug", GM.screenSize.Left + 175, GM.screenSize.Top + 40, TextAtt.TopLeft);
+
+                if (GM.inputM.KeyPressed(Keys.F5))
+                {
+                    LaserEnemy laserEnemy = new LaserEnemy(GM.inputM.MouseLocation, false);
+                }
+                if (GM.inputM.KeyPressed(Keys.F12))
+                {
+                    GameSetup.EnemySpawnSystem.Kill();
+                }
+            }
+
             //For dodging
             Vector3 d = new Vector3(0, 0, 0);
             if (tiBoostDelay == null || tiBoostDelay.ElapsedSoFar > 0.25f)
@@ -279,6 +313,5 @@ namespace Template.Game
                 Wash = Color.LimeGreen;
             }
         }
-
     }
 }
