@@ -145,7 +145,7 @@ namespace Template
             if (score > straferSpawn) totalChance = straferChance;
             if (score > turretSpawn) totalChance = turretChance;
             if (score > doubleTurretChance) totalChance = doubleTurretChance;
-            if (score > laserSpawn) totalChance = laserChance;
+            if (score > laserSpawn) totalChance = doubleLaserChance;
 
             int chance = enemySelector.Next(totalChance);
 
