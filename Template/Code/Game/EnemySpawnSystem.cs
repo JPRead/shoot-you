@@ -22,6 +22,9 @@ namespace Template
         private int spawnX;
         private int spawnY;
         private int score;
+        private bool increasedRate;
+        private Timing singleRate;
+        private Timing doubleRate;
 
         //Spawn score thresholds
         private int straferSpawn = 4;
@@ -56,8 +59,27 @@ namespace Template
             GM.eventM.AddTimer(tiSpawnTimer = new Event(600, "Round timer"));
             TimerInitialise();
             Timer.EventContinous(1, Spawning);
+            Timer.EventContinous(0.5f, DoubleSpawn);
+
+            UpdateCallBack += Tick;
         }
 
+        private void Tick()
+        {
+            if(increasedRate == true)
+            {
+
+            }
+            else
+            {
+
+            }
+        }
+
+        private void DoubleSpawn()
+        {
+            Spawning();
+        }
 
         private void Spawning()
         {
@@ -96,47 +118,6 @@ namespace Template
 
             enemySelector = new Random();
             EnemySpawner(spawnPos);
-            
-            ////Every 40 seconds
-            //if (((int)tiSpawnTimer.ElapsedSoFar % 40) == 0)
-            //{
-            //    //LaserEnemy laserEnemy = new LaserEnemy(spawnPos, false);
-            //}
-            //else
-            //{
-            //    //Every 20 seconds
-            //    if (((int)tiSpawnTimer.ElapsedSoFar % 20) == 0)
-            //    {
-            //        TurretEnemy turretEnemy = new TurretEnemy(spawnPos, true);
-            //    }
-            //    else
-            //    {
-            //        //Every 10 seconds
-            //        if (((int)tiSpawnTimer.ElapsedSoFar % 15) == 0)
-            //        {
-            //            TurretEnemy turretEnemy = new TurretEnemy(spawnPos, false);
-                        
-            //        }
-            //        else
-            //        {
-            //            {
-            //                //Every 5 seconds
-            //                if (((int)tiSpawnTimer.ElapsedSoFar % 5) == 0)
-            //                {
-            //                    StraferEnemy straferEnemy = new StraferEnemy(spawnPos);
-            //                }
-            //                else
-            //                {
-            //                    //Every 1 second
-            //                    if (((int)tiSpawnTimer.ElapsedSoFar % 1) == 0)
-            //                    {
-            //                        ChargerEnemy chargerEnemy = new ChargerEnemy(spawnPos);
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
         }
 
         private void EnemySpawner(Vector2 spawnPos)
