@@ -11,14 +11,17 @@ namespace Template.Game
         //keys for controlling player
         private Keys MoveRight;
         private Keys MoveLeft;
-        private Keys Shoot;
+        private Keys Fire;
+        private Keys AltFire;
         private Keys Forward;
         private Keys Backward;
         private Keys Boost;
         private Event tiBoostDelay;
         private float boostX;
         private float boostY;
-        private Event tiShootCooldown;
+        private Event tiFireCooldown;
+        private Event tiAltFireCooldown;
+        private Event tiAltFireDelay;
         private int health;
         private Sprite gunSprite;
         private Sprite directionSprite;
@@ -137,7 +140,9 @@ namespace Template.Game
             //EpilogueCallBack += Stop;
 
             //Timers
-            GM.eventM.AddTimer(tiShootCooldown = new Event(0.1f, "Shoot Cooldown"));
+            GM.eventM.AddTimer(tiFireCooldown = new Event(0.1f, "Fire Cooldown"));
+            //GM.eventM.AddTimer(tiAltFireCooldown = new Event(10f, "Alt Fire Cooldown"));
+
 
             //Funeral
             FuneralCallBack += Funeral;
@@ -148,10 +153,10 @@ namespace Template.Game
         {
             gunSprite.Kill();
             directionSprite.Kill();
-            if(playerScore > GM.BestScore)
-            {
-                GM.BestScore = playerScore;
-            }
+            //if(playerScore > GM.BestScore)
+            //{
+            //    GM.BestScore = playerScore;
+            //}
         }
 
         //Stopping collisions with own bullets
@@ -160,7 +165,7 @@ namespace Template.Game
             if (hit is Bullet)
             {
                 Bullet bullet = (Bullet)hit;
-                if(bullet.Player == this)CollisionAbandonResponse = true;
+                if (bullet.Player == this) CollisionAbandonResponse = true;
                 //CollisionAbandonResponse = true;
             }
         }
@@ -170,6 +175,8 @@ namespace Template.Game
         {
             if (tiBoostDelay != null && tiBoostDelay.ElapsedSoFar < 0.5f)
                 GM.textM.Draw(FontBank.arcadePixel, "DODGE~COOLDOWN~" + Math.Round(0.5f - tiBoostDelay.ElapsedSoFar, 1), GM.screenSize.Left + 40, GM.screenSize.Bottom - 40, TextAtt.BottomLeft);
+            if (tiAltFireCooldown != null && tiAltFireCooldown.ElapsedSoFar < 10)
+                GM.textM.Draw(FontBank.arcadePixel, "ALTERNATE FIRE~COOLDOWN~" + (10 - (int)(tiAltFireCooldown.ElapsedSoFar + 0.5)), GM.screenSize.Left + 40, GM.screenSize.Bottom - 80, TextAtt.BottomLeft);
         }
 
         /// <summary>
@@ -199,14 +206,16 @@ namespace Template.Game
         /// <param name="forward"></param>
         /// <param name="backward"></param>
         /// <param name="shoot"></param>
+        /// <param name="altfire"></param>
         /// <param name="boost"></param>
-        public void SetKeys(Keys left, Keys right, Keys forward, Keys backward, Keys shoot, Keys boost)
+        public void SetKeys(Keys left, Keys right, Keys forward, Keys backward, Keys shoot, Keys altfire, Keys boost)
         {
             MoveRight = right;
             MoveLeft = left;
             Forward = forward;
             Backward = backward;
-            Shoot = shoot;
+            Fire = shoot;
+            AltFire = altfire;
             Boost = boost;
         }
 
@@ -283,10 +292,27 @@ namespace Template.Game
             directionSprite.Position = Position + (dNorm * 20);
 
             //For firing
-            if ((GM.inputM.KeyDown(Shoot) || GM.inputM.MouseLeftButtonHeld()) && GM.eventM.Elapsed(tiShootCooldown))
+            if ((GM.inputM.KeyDown(Fire) || GM.inputM.MouseLeftButtonHeld()) && GM.eventM.Elapsed(tiFireCooldown))
             {
                 //create bullet and pass reference to player and angle
                 new Bullet(this, aimAngle, 1500f, 10);
+            }
+
+            if ((GM.inputM.KeyDown(AltFire) || GM.inputM.MouseRightButtonHeld()) && (tiAltFireCooldown == null || GM.eventM.Elapsed(tiAltFireCooldown)))
+            {
+                for (int i = 0; i < 360; i += 5)
+                {
+                    Vector3 v3ShootAngle = RotationHelper.MyDirection(this, i);
+                    Vector2 v2ShootAngle = new Vector2(v3ShootAngle.X, v3ShootAngle.Y);
+
+                    RotationHelper.Direction2DFromAngle(i, 0);
+
+                    //create bullet and pass reference to player and angle
+                    new Bullet(this, Position2D + v2ShootAngle, 750, 50);
+                }
+
+                if (tiAltFireCooldown == null)
+                    GM.eventM.AddTimer(tiAltFireCooldown = new Event(10f, "Alt Fire Cooldown"));
             }
 
             //For boosting
@@ -306,7 +332,7 @@ namespace Template.Game
             }
 
             //Resetting dodge delay for displaying
-            if(tiBoostDelay != null && tiBoostDelay.ElapsedSoFar > 0.25f)
+            if (tiBoostDelay != null && tiBoostDelay.ElapsedSoFar > 0.25f)
             {
                 Friction = 10f;
                 invulnerable = false;

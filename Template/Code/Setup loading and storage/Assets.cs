@@ -46,7 +46,7 @@ namespace Template
         /// <summary>
         /// holds fastest time to 10
         /// </summary>
-        public static float BestScore = 100;
+        public static float BestScore = 0;
         /*************************************************
         ************   STORAGE FOR GLOBALS     ***********
         *************************************************/

@@ -23,8 +23,6 @@ namespace Template
         private int spawnY;
         private int score;
         private bool increasedRate;
-        private Timing singleRate;
-        private Timing doubleRate;
 
         //Spawn score thresholds
         private int straferSpawn = 4;
@@ -38,6 +36,7 @@ namespace Template
         private int doubleTurretChance = 2550;
         private int laserChance = 2650;
         private int doubleLaserChance = 2700;
+        private Event tiDoubleSpawnCooldown;
 
         public int Score
         {
@@ -52,37 +51,79 @@ namespace Template
             }
         }
 
+        public bool IncreasedRate
+        {
+            get
+            {
+                return increasedRate;
+            }
+
+            set
+            {
+                increasedRate = value;
+            }
+        }
+
         public EnemySpawnSystem()
         {
+            increasedRate = false;
+
             r = new Random();
             GM.engineM.AddSprite(this);
             GM.eventM.AddTimer(tiSpawnTimer = new Event(600, "Round timer"));
+            GM.eventM.AddTimer(tiDoubleSpawnCooldown = new Event(5, "Double spawn cooldown"));
             TimerInitialise();
-            Timer.EventContinous(1, Spawning);
-            Timer.EventContinous(0.5f, DoubleSpawn);
-
+            Timer.EventContinous(1, Spawn);
+            Timer.EventContinous(0.5f, Spawn);
+            
             UpdateCallBack += Tick;
         }
 
         private void Tick()
         {
-            if(increasedRate == true)
-            {
 
-            }
-            else
-            {
-
-            }
         }
 
-        private void DoubleSpawn()
+        private void Spawn()
         {
-            Spawning();
-        }
+            if (increasedRate)
+            {
+                //Deciding edge to spawn on
+                Vector2 spawnPosI = new Vector2();
+                //Generate int between 0 and 3
+                int spawnSideI = r.Next(0, 3);
+                //Left
+                if (spawnSideI == 0)
+                {
+                    spawnX = 0;
+                    spawnY = r.Next(0, GM.screenSize.Bottom);
+                    spawnPosI = new Vector2(spawnX, spawnY);
+                }
+                //Right
+                if (spawnSideI == 1)
+                {
+                    spawnX = GM.screenSize.Right;
+                    spawnY = r.Next(0, GM.screenSize.Bottom);
+                    spawnPosI = new Vector2(spawnX, spawnY);
+                }
+                //Top
+                if (spawnSideI == 2)
+                {
+                    spawnY = 0;
+                    spawnX = r.Next(0, GM.screenSize.Right);
+                    spawnPosI = new Vector2(spawnX, spawnY);
+                }
+                //Bottom
+                if (spawnSideI == 3)
+                {
+                    spawnY = GM.screenSize.Bottom;
+                    spawnX = r.Next(0, GM.screenSize.Right);
+                    spawnPosI = new Vector2(spawnX, spawnY);
+                }
 
-        private void Spawning()
-        {
+                enemySelector = new Random();
+                EnemySpawner(spawnPosI);
+            }
             //Deciding edge to spawn on
             Vector2 spawnPos = new Vector2();
             //Generate int between 0 and 3
@@ -118,6 +159,20 @@ namespace Template
 
             enemySelector = new Random();
             EnemySpawner(spawnPos);
+
+            //Start double spawns every 20 seconds
+            if (((int)(tiSpawnTimer.ElapsedSoFar)) % 20 == 0)
+            {
+                increasedRate = true;
+                GM.eventM.AddTimer(tiDoubleSpawnCooldown = new Event(5, "Double spawn cooldown"));
+            }
+            //And end them after 5 seconds
+            if (GM.eventM.Elapsed(tiDoubleSpawnCooldown))
+            {
+                increasedRate = false;
+                GM.eventM.AddTimer(tiDoubleSpawnCooldown = new Event(5, "Double spawn cooldown"));
+            }
+
         }
 
         private void EnemySpawner(Vector2 spawnPos)

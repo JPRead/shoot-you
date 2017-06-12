@@ -14,13 +14,14 @@ using Template.Title;
 
 namespace Template.Game
 {
-    class GameSetup : BasicSetup
+    internal class GameSetup : BasicSetup
     {
         int score1 = 0;
         int score2 = 0;
         private Event tiGameTimer;
         private static PlayerOne playerChar;
         private static EnemySpawnSystem enemySpawnSystem;
+        private bool playerAlreadyDead;
 
         public static PlayerOne PlayerChar
         {
@@ -50,6 +51,8 @@ namespace Template.Game
 
         public GameSetup() : base(false)
         {
+            playerAlreadyDead = false;
+
             GM.engineM.DebugDisplay = Debug.none;// Debug.fps | Debug.version | Debug.sprite;
             GM.engineM.ScreenColour = Color.Black;
 
@@ -125,9 +128,6 @@ namespace Template.Game
 
             //get game time and check for high score (quickest time)
             float timeTaken = tiGameTimer.ElapsedSoFar;
-            if (EnemySpawnSystem.Score > GM.BestScore)
-                GM.BestScore = EnemySpawnSystem.Score;
-            
 
             //stop timer
             GM.eventM.Remove(tiGameTimer);
@@ -139,9 +139,19 @@ namespace Template.Game
 
             //concatenate the message to display
             // ~ forces a line break
-            string message = "GAME OVER~PLAYER " + winner + "~YOU ARE AWESOME~GAME WON IN " + Math.Round(timeTaken, 2) + " seconds";
+            string message = "GAME OVER~PLAYER " + winner + "~YOU SURVIVED " + (int)tiGameTimer.ElapsedSoFar + " SECONDS" + "~AND EARNED " + EnemySpawnSystem.Score + " POINTS";
 
-            GM.textM.DrawAsSprites(FontBank.arcadeLarge, message ,
+            if(EnemySpawnSystem.Score <= GM.BestScore)
+            {
+                message += "~~You did not beat the high score of " + GM.BestScore + " points";
+            }
+            else
+            {
+                message += "~~You set a new high score of " + EnemySpawnSystem.Score + " points";
+                GM.BestScore = EnemySpawnSystem.Score;
+            }
+
+            GM.textM.DrawAsSprites(FontBank.arcadeLarge, message,
                 GM.screenSize.Center.X, GM.screenSize.Center.Y, TextAtt.Centred, 3000, dummy);
 
             //run BackToTitle subroutine after 10 seconds
@@ -153,6 +163,12 @@ namespace Template.Game
             //display code
             //GM.textM.Draw(FontBank.arcadeLarge, "1 UP~" + score1, 30, 30, TextAtt.TopLeft);
             //GM.textM.Draw(FontBank.arcadeLarge, "2 UP~" + score2, GM.screenSize.Right - 30, 30, TextAtt.TopRight);
+
+            if(PlayerChar.Health <= 0 && playerAlreadyDead == false)
+            {
+                playerAlreadyDead = true;
+                GameOver(1);
+            }
 
             //Health bar
             string healthBar = "";
@@ -169,10 +185,11 @@ namespace Template.Game
             //Score
             GM.textM.Draw(FontBank.arcadePixel, "Score: " + Convert.ToString(EnemySpawnSystem.Score), GM.screenSize.Right - 175, GM.screenSize.Bottom - 30, TextAtt.BottomLeft);
 
-            //Debug
-            //string debugText = "";
-            //if (playerChar.DebugMode) { debugText = "Debug"; }
-            //GM.textM.Draw(FontBank.arcadePixel, debugText, GM.screenSize.Left + 175, GM.screenSize.Top + 40, TextAtt.TopLeft);
+            //Double rate notifier
+            if (enemySpawnSystem.IncreasedRate)
+            {
+                GM.textM.Draw(FontBank.arcadePixel, "DOUBLE SPAWNS", GM.screenSize.Center.X, GM.screenSize.Top + 75, TextAtt.Centred);
+            }
 
             //let player quit
             if (GM.inputM.KeyPressed(Keys.Escape))
