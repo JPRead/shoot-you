@@ -18,7 +18,7 @@ namespace Template
         private Sprite laserTop;
         private Sprite laserLeft;
         private bool fourLasers;
-
+        
         /// <summary>
         /// Constructor for LaserEnemy
         /// </summary>
@@ -27,7 +27,7 @@ namespace Template
         public LaserEnemy(Vector2 startPos, bool doubleLasers)
         {
             fourLasers = doubleLasers;
-
+            
             Random setRotation = new Random();
             RotationAngle = setRotation.Next(0, 360);
 

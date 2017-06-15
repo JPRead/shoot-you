@@ -32,14 +32,14 @@ namespace Template.Game
         public Bullet(Sprite player, Vector2 fireAngle, float bulletSpeed, int bulletDamage)
         {
             damage = bulletDamage;
-
-            //Gets faster over time!
-            //this.Friction = -0.5f;
+            
             this.player = player;
             GM.engineM.AddSprite(this);
             Frame.Define(Tex.SingleWhitePixel);
             SX = 4;
             SY = 24;
+
+
 
             //Sound effects
             GM.audioM.PlayEffect("shoot");

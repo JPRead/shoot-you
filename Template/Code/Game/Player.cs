@@ -12,7 +12,7 @@ namespace Template.Game
         private Keys MoveRight;
         private Keys MoveLeft;
         private Keys Fire;
-        private Keys AltFire;
+        private Keys SpecialFire;
         private Keys Forward;
         private Keys Backward;
         private Keys Boost;
@@ -20,8 +20,8 @@ namespace Template.Game
         private float boostX;
         private float boostY;
         private Event tiFireCooldown;
+        private Event tiSpecialFireCooldown;
         private Event tiAltFireCooldown;
-        private Event tiAltFireDelay;
         private int health;
         private Sprite gunSprite;
         private Sprite directionSprite;
@@ -141,6 +141,7 @@ namespace Template.Game
 
             //Timers
             GM.eventM.AddTimer(tiFireCooldown = new Event(0.1f, "Fire Cooldown"));
+            
             //GM.eventM.AddTimer(tiAltFireCooldown = new Event(10f, "Alt Fire Cooldown"));
 
 
@@ -166,7 +167,12 @@ namespace Template.Game
             {
                 Bullet bullet = (Bullet)hit;
                 if (bullet.Player == this) CollisionAbandonResponse = true;
-                //CollisionAbandonResponse = true;
+            }
+
+            if (hit is Missile)
+            {
+                Missile missile = (Missile)hit;
+                if (missile.Owner == this) CollisionAbandonResponse = true;
             }
         }
 
@@ -175,8 +181,10 @@ namespace Template.Game
         {
             if (tiBoostDelay != null && tiBoostDelay.ElapsedSoFar < 0.5f)
                 GM.textM.Draw(FontBank.arcadePixel, "DODGE~COOLDOWN~" + Math.Round(0.5f - tiBoostDelay.ElapsedSoFar, 1), GM.screenSize.Left + 40, GM.screenSize.Bottom - 40, TextAtt.BottomLeft);
-            if (tiAltFireCooldown != null && tiAltFireCooldown.ElapsedSoFar < 10)
-                GM.textM.Draw(FontBank.arcadePixel, "ALTERNATE FIRE~COOLDOWN~" + (10 - (int)(tiAltFireCooldown.ElapsedSoFar + 0.5)), GM.screenSize.Left + 40, GM.screenSize.Bottom - 80, TextAtt.BottomLeft);
+            if (tiSpecialFireCooldown != null && tiSpecialFireCooldown.ElapsedSoFar < 10)
+                GM.textM.Draw(FontBank.arcadePixel, "SPECIAL FIRE~COOLDOWN~" + (10 - (int)(tiSpecialFireCooldown.ElapsedSoFar + 0.5)), GM.screenSize.Left + 40, GM.screenSize.Bottom - 120, TextAtt.BottomLeft);
+            if (tiAltFireCooldown != null && tiAltFireCooldown.ElapsedSoFar < 1)
+                GM.textM.Draw(FontBank.arcadePixel, "ALTERNATE FIRE~COOLDOWN~" + Math.Round(1 - tiAltFireCooldown.ElapsedSoFar, 1), GM.screenSize.Left + 40, GM.screenSize.Bottom - 80, TextAtt.BottomLeft);
         }
 
         /// <summary>
@@ -206,16 +214,16 @@ namespace Template.Game
         /// <param name="forward"></param>
         /// <param name="backward"></param>
         /// <param name="shoot"></param>
-        /// <param name="altfire"></param>
+        /// <param name="specialfire"></param>
         /// <param name="boost"></param>
-        public void SetKeys(Keys left, Keys right, Keys forward, Keys backward, Keys shoot, Keys altfire, Keys boost)
+        public void SetKeys(Keys left, Keys right, Keys forward, Keys backward, Keys shoot, Keys specialfire, Keys boost)
         {
             MoveRight = right;
             MoveLeft = left;
             Forward = forward;
             Backward = backward;
             Fire = shoot;
-            AltFire = altfire;
+            SpecialFire = specialfire;
             Boost = boost;
         }
 
@@ -298,7 +306,7 @@ namespace Template.Game
                 new Bullet(this, aimAngle, 1500f, 10);
             }
 
-            if ((GM.inputM.KeyDown(AltFire) || GM.inputM.MouseRightButtonHeld()) && (tiAltFireCooldown == null || GM.eventM.Elapsed(tiAltFireCooldown)))
+            if (GM.inputM.KeyDown(SpecialFire) && (tiSpecialFireCooldown == null || GM.eventM.Elapsed(tiSpecialFireCooldown)))
             {
                 for (int i = 0; i < 360; i += 5)
                 {
@@ -311,8 +319,30 @@ namespace Template.Game
                     new Bullet(this, Position2D + v2ShootAngle, 750, 50);
                 }
 
-                if (tiAltFireCooldown == null)
-                    GM.eventM.AddTimer(tiAltFireCooldown = new Event(10f, "Alt Fire Cooldown"));
+                for (int i = 0; i < 360; i += 10)
+                {
+                    Vector3 v3ShootAngle = RotationHelper.MyDirection(this, i);
+                    Vector2 v2ShootAngle = new Vector2(v3ShootAngle.X, v3ShootAngle.Y);
+
+                    RotationHelper.Direction2DFromAngle(i, 0);
+
+                    //create bullet and pass reference to player and angle
+                    new Bullet(this, Position2D + v2ShootAngle, 500, 50);
+                }
+
+                if (tiSpecialFireCooldown == null)
+                    GM.eventM.AddTimer(tiSpecialFireCooldown = new Event(10f, "Special Fire Cooldown"));
+            }
+
+            //Missiles
+            if (GM.inputM.MouseRightButtonHeld() && (tiAltFireCooldown == null || GM.eventM.Elapsed(tiAltFireCooldown)))
+            {
+                Vector2 dir = new Vector2(RotationHelper.MyDirection(this, 0).X, RotationHelper.MyDirection(this, 0).Y);
+                //Find target based on cursor placement
+                new Missile(Position2D + (24 * dir), dir, this, this, 750, 200, 20, 50);
+
+                if(tiAltFireCooldown == null)
+                    GM.eventM.AddTimer(tiAltFireCooldown = new Event(1, "Alternate Fire Cooldown"));
             }
 
             //For boosting
