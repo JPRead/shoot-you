@@ -3,6 +3,7 @@ using Engine7;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace Template.Game
 {
@@ -22,13 +23,18 @@ namespace Template.Game
         private Event tiFireCooldown;
         private Event tiSpecialFireCooldown;
         private Event tiAltFireCooldown;
+        private Event tiLockingDelay;
         private int health;
         private Sprite gunSprite;
         private Sprite directionSprite;
+        private Sprite lockSprite;
+        private Sprite attack;
         private int playerScore;
         private bool invulnerable;
         private bool debugMode;
+        private float lockAmount;
 
+        
         public int Health
         {
             get
@@ -93,6 +99,14 @@ namespace Template.Game
             gunSprite.SX = 0.1f;
             gunSprite.SY = 0.6f;
 
+            // Creating lock on sprite
+            lockSprite = new Sprite();
+            GM.engineM.AddSprite(lockSprite);
+            lockSprite.Visible = false;
+            lockSprite.Frame.Define(GM.txSprite, new Rectangle(71, 160, 36, 36));
+            Wash = Color.LimeGreen;
+            Layer = RenderLayer.hud;
+
             //Creating direction sprite
             directionSprite = new Sprite();
             GM.engineM.AddSprite(directionSprite);
@@ -141,6 +155,7 @@ namespace Template.Game
 
             //Timers
             GM.eventM.AddTimer(tiFireCooldown = new Event(0.1f, "Fire Cooldown"));
+            GM.eventM.AddTimer(tiLockingDelay = new Event(0.01f, "Locking Cooldown"));
             
             //GM.eventM.AddTimer(tiAltFireCooldown = new Event(10f, "Alt Fire Cooldown"));
 
@@ -187,20 +202,7 @@ namespace Template.Game
                 GM.textM.Draw(FontBank.arcadePixel, "ALTERNATE FIRE~COOLDOWN~" + Math.Round(1 - tiAltFireCooldown.ElapsedSoFar, 1), GM.screenSize.Left + 40, GM.screenSize.Bottom - 80, TextAtt.BottomLeft);
         }
 
-        /// <summary>
-        /// Unneeded at the moment
-        /// </summary>
-        /// <param name="hit"></param>
-        //private void Stop(Sprite hit)
-        //{
-        //    //stop if hit wall
-        //    //if (hit is wall)
-        //    //Velocity = Vector3.Zero;
-        //}
-
-        /// <summary>
-        /// make collision active
-        /// </summary>
+        //Activate collisions
         private void MakeVunerable()
         {
             CollisionActive = true;
@@ -334,16 +336,16 @@ namespace Template.Game
                     GM.eventM.AddTimer(tiSpecialFireCooldown = new Event(10f, "Special Fire Cooldown"));
             }
 
-            //Missiles
-            if (GM.inputM.MouseRightButtonHeld() && (tiAltFireCooldown == null || GM.eventM.Elapsed(tiAltFireCooldown)))
-            {
-                Vector2 dir = new Vector2(RotationHelper.MyDirection(this, 0).X, RotationHelper.MyDirection(this, 0).Y);
-                //Find target based on cursor placement
-                new Missile(Position2D + (24 * dir), dir, this, this, 750, 200, 20, 50);
+            ////Missiles
+            //if (GM.inputM.MouseRightButtonHeld() && (tiAltFireCooldown == null || GM.eventM.Elapsed(tiAltFireCooldown)))
+            //{
+            //    Vector2 dir = new Vector2(RotationHelper.MyDirection(this, 0).X, RotationHelper.MyDirection(this, 0).Y);
+            //    //Find target based on cursor placement
+            //    new Missile(Position2D + (24 * dir), dir, this, this, 750, 200, 20, 50);
 
-                if(tiAltFireCooldown == null)
-                    GM.eventM.AddTimer(tiAltFireCooldown = new Event(1, "Alternate Fire Cooldown"));
-            }
+            //    if(tiAltFireCooldown == null)
+            //        GM.eventM.AddTimer(tiAltFireCooldown = new Event(1, "Alternate Fire Cooldown"));
+            //}
 
             //For boosting
             if (GM.inputM.KeyPressed(Boost) && (tiBoostDelay == null || GM.eventM.Elapsed(tiBoostDelay)) && d != Vector3.Zero)
@@ -368,6 +370,72 @@ namespace Template.Game
                 invulnerable = false;
                 Wash = Color.LimeGreen;
             }
+
+            //Locking sequence
+            if (GM.inputM.MouseRightButtonPressed())
+            {
+                lockSprite.Visible = true;
+
+                attack = null;
+                float bestDistance = int.MaxValue;
+                
+                foreach (Sprite s in GM.engineM.SpriteList)
+                {
+                    if (s is Enemy)
+                    {
+                        if(attack == null || Vector2.DistanceSquared(Centre2D, s.Centre2D) < bestDistance)
+                        {
+                            attack = s;
+                            bestDistance = Vector2.DistanceSquared(Centre2D, s.Centre2D);
+                        }
+                    }
+                }
+            }
+
+            if (GM.inputM.MouseRightButtonHeld() && GM.eventM.Elapsed(tiLockingDelay) && attack != null)
+            {
+                Color color = new Color();
+                if (lockAmount < 1)
+                {
+                    lockAmount += tiLockingDelay.Interval;
+                    lockSprite.RotationAngle = 360 * lockAmount;
+                    //lockSprite.Wash = new Color(255, 255, 255);
+                    
+                }
+                else
+                {
+                    lockSprite.RotationAngle = 0;
+                    //lockSprite.Wash = new Color(255, 0, 0);
+                }
+
+                color.R = (byte)(255 * lockAmount);
+                color.B = (byte)(255 - color.B);
+
+                lockSprite.Position2D = attack.Position2D;
+                lockSprite.ScaleBoth = 1.5f + (1 - lockAmount);
+                lockSprite.Wash = color;
+            }
+
+            if (GM.inputM.MouseRightButtonReleased())
+            {
+                if (lockAmount >= 1 && (tiAltFireCooldown == null || GM.eventM.Elapsed(tiAltFireCooldown)))
+                {
+                    FireMissile(attack);
+                }
+                lockSprite.Visible = false;
+                lockAmount = 0;
+            }
+        }
+
+        private void FireMissile(Sprite lockedSprite)
+        {
+            Sprite target = lockedSprite;
+
+            Vector2 dir = new Vector2(RotationHelper.MyDirection(this, 0).X, RotationHelper.MyDirection(this, 0).Y);
+            new Missile(Position2D + (24 * dir), dir, this, target, 750, 500, 20, 50);
+
+            if (tiAltFireCooldown == null)
+                GM.eventM.AddTimer(tiAltFireCooldown = new Event(1, "Alternate Fire Cooldown"));
         }
     }
 }
