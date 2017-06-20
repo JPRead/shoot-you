@@ -39,14 +39,11 @@ namespace Template.Game
             SX = 4;
             SY = 24;
 
-
-
             //Sound effects
             GM.audioM.PlayEffect("shoot");
 
             //get player attributes
             Wash = player.Wash;
-            //RotationAngle = player.RotationAngle;
 
             //set postion of bullet and give velocity
             X = player.Centre.X;
@@ -74,10 +71,6 @@ namespace Template.Game
             //kill after 5 seconds
             TimerInitialise();
             Timer.KillAfter(5f);
-
-            //allow to wrap
-            //LimitInitialise();
-            //Limit.ViewPortAction(LimitAction.wrapExact);
         }
 
         private void Hit(Sprite hit)
@@ -102,7 +95,6 @@ namespace Template.Game
                 else
                 {
                     CollisionAbandonResponse = true;
-                    //Kill();
                 }
             }
             if(hit is Enemy)

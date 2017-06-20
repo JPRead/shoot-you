@@ -75,14 +75,8 @@ namespace Template
             TimerInitialise();
             Timer.EventContinous(1, Spawn);
             Timer.EventContinous(0.5f, Spawn);
-            
-            UpdateCallBack += Tick;
         }
 
-        private void Tick()
-        {
-
-        }
 
         private void Spawn()
         {

@@ -67,6 +67,7 @@ namespace Template.Game
 
             Moving = true;
             CollisionActive = true;
+            CollisionPrimary = true;
 
             UpdateCallBack += Move;
             PrologueCallBack += Hit;
@@ -78,40 +79,46 @@ namespace Template.Game
 
         private void Hit(Sprite hit)
         {
-            if(hit == owner)
+            if(hit is Enemy)
             {
-                CollisionAbandonResponse = true;
-            }
-            else
-            {
-                if(hit == GameSetup.PlayerChar && GameSetup.PlayerChar.Invulnerable == false)
+                if(owner is Enemy)
                 {
-                    GameSetup.PlayerChar.Health -= damage;
-                    GM.audioM.PlayEffect("explode");
-
-                    if (GameSetup.PlayerChar.Health <= 0)
+                    Kill();
+                }
+                else
+                {
+                    Enemy enemy = (Enemy)hit;
+                    enemy.Health -= damage;
+                    if(enemy.Health <= 0)
                     {
-                        GameSetup.PlayerChar.Kill();
+                        enemy.Kill();
                     }
                     Kill();
                 }
-                if(hit is Enemy)
+            }
+            if(hit is Player && GameSetup.PlayerChar.Invulnerable == false)
+            {
+                if(owner is Player)
                 {
-                    if(owner is Enemy)
+                    
+                }
+                else
+                {
+                    GameSetup.PlayerChar.Health -= damage;
+                    if(GameSetup.PlayerChar.Health <= 0)
                     {
+                        GameSetup.PlayerChar.Kill();
                         Kill();
                     }
-                    else
-                    {
-                        Enemy enemy = (Enemy)hit;
-                        enemy.Health -= damage;
-                        Kill();
-                        if (enemy.Health <= 0)
-                        {
-                            enemy.Kill();
-                            GM.audioM.PlayEffect("enemykilled");
-                        }
-                    }
+                }
+            }
+            if(hit is Bullet)
+            {
+                Bullet bullet = (Bullet)hit;
+                if(bullet.Player == GameSetup.PlayerChar)
+                {
+                    bullet.Kill();
+                    Kill();
                 }
             }
         }
@@ -126,15 +133,22 @@ namespace Template.Game
                 GM.eventM.AddTimer(tiSmokeCounter = new Event(0.5f, "Smoke Counter"));
             }
 
-            //turnDir = -1, anticlockwise; 0, none; 1, clockwise
-            int turnDir = (int)RotationHelper.AngularDirectionTo(this, target.Position, 0, false);
+            if (target.Dead)
+            {
+                RotationHelper.VelocityInCurrentDirection(this, speed, 0);
+            }
+            else
+            {
+                //turnDir = -1, anticlockwise; 0, none; 1, clockwise
+                int turnDir = (int)RotationHelper.AngularDirectionTo(this, target.Position, 0, false);
 
-            //Direction to add velocity to, additional angle is 90 * turnDir so -90 for anticlockwise, 90 for clockwise, straight ahead for none
-            Vector3 velDir = RotationHelper.MyDirection(this, 90 * turnDir);
+                //Direction to add velocity to, additional angle is 90 * turnDir so -90 for anticlockwise, 90 for clockwise, straight ahead for none
+                Vector3 velDir = RotationHelper.MyDirection(this, 90 * turnDir);
 
-            Velocity = RotationHelper.MyDirection(this, 0) * speed;
-            Velocity += velDir * (turnAmount / 5);
-            RotationHelper.FaceVelocity(this, DirectionAccuracy.free, false, 0);
+                Velocity = RotationHelper.MyDirection(this, 0) * speed;
+                Velocity += velDir * (turnAmount / 5);
+                RotationHelper.FaceVelocity(this, DirectionAccuracy.free, false, 0);
+            }
         }
     }
 }

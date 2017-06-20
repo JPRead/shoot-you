@@ -46,7 +46,6 @@ namespace Template
 
             //Callbacks
             UpdateCallBack += Move;
-            PrologueCallBack += Hit;
             FuneralCallBack += KillSprites;
 
             //Timers
@@ -92,11 +91,6 @@ namespace Template
                     new Bullet(this, playerPos, 1000f, 10);
                 }
             }
-        }
-
-        private void Hit(Sprite hit)
-        {
-
         }
 
         private void KillSprites()

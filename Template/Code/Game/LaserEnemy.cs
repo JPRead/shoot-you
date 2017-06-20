@@ -32,7 +32,7 @@ namespace Template
             RotationAngle = setRotation.Next(0, 360);
 
             //Set properties
-            KillPoints = 10;
+            KillPoints = 20;
             Health = 100;
 
             //Set collisions
@@ -73,7 +73,6 @@ namespace Template
             laserTop.Wash = Color.OrangeRed;
             laserTop.Shape = Shape.rectangle;
             laserTop.Static = false;
-            laserTop.PrologueCallBack += CollisionLaser;
 
             //4 lasers
             if (fourLasers)
@@ -87,7 +86,6 @@ namespace Template
                 laserLeft.Wash = Color.OrangeRed;
                 laserLeft.Shape = Shape.rectangle;
                 laserLeft.Static = false;
-                laserLeft.PrologueCallBack += CollisionLaser;
             }
 
             //Prevent moving off screen
@@ -99,18 +97,6 @@ namespace Template
             UpdateCallBack += Move;
             FuneralCallBack += KillSprites;
             PrologueCallBack += Collision;
-        }
-
-        private void CollisionLaser(Sprite hit)
-        {
-            //laserTop.Velocity = Vector3.Zero;
-            //laserTop.Position = Position;
-
-            //if (fourLasers)
-            //{
-            //    laserLeft.Velocity = Vector3.Zero;
-            //    laserLeft.Position = Position;
-            //}
         }
 
         private void Collision(Sprite hit)

@@ -160,10 +160,6 @@ namespace Template.Game
 
         public override void Logic()
         {
-            //display code
-            //GM.textM.Draw(FontBank.arcadeLarge, "1 UP~" + score1, 30, 30, TextAtt.TopLeft);
-            //GM.textM.Draw(FontBank.arcadeLarge, "2 UP~" + score2, GM.screenSize.Right - 30, 30, TextAtt.TopRight);
-
             if(PlayerChar.Health <= 0 && playerAlreadyDead == false)
             {
                 playerAlreadyDead = true;

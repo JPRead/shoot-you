@@ -33,8 +33,8 @@ namespace Template.Game
         private bool invulnerable;
         private bool debugMode;
         private float lockAmount;
+        private Event beepCountDown;
 
-        
         public int Health
         {
             get
@@ -102,10 +102,10 @@ namespace Template.Game
             // Creating lock on sprite
             lockSprite = new Sprite();
             GM.engineM.AddSprite(lockSprite);
-            lockSprite.Visible = false;
             lockSprite.Frame.Define(GM.txSprite, new Rectangle(71, 160, 36, 36));
             Wash = Color.LimeGreen;
             Layer = RenderLayer.hud;
+            lockSprite.Visible = false;
 
             //Creating direction sprite
             directionSprite = new Sprite();
@@ -241,8 +241,8 @@ namespace Template.Game
         private void Move()
         {
             //For gunSprite
-            Vector2 aimAngle = GM.inputM.MouseLocation;
-            Vector2 direction = aimAngle - Position2D;
+            Vector2 aimPos = GM.inputM.MouseLocation;
+            Vector2 direction = aimPos - Position2D;
             direction = Vector2.Normalize(direction);
             RotationHelper.FaceDirection(gunSprite, direction, DirectionAccuracy.free, 0);
             gunSprite.Position2D = Position2D + (direction * 15);
@@ -305,7 +305,7 @@ namespace Template.Game
             if ((GM.inputM.KeyDown(Fire) || GM.inputM.MouseLeftButtonHeld()) && GM.eventM.Elapsed(tiFireCooldown))
             {
                 //create bullet and pass reference to player and angle
-                new Bullet(this, aimAngle, 1500f, 10);
+                new Bullet(this, aimPos, 1500f, 10);
             }
 
             if (GM.inputM.KeyDown(SpecialFire) && (tiSpecialFireCooldown == null || GM.eventM.Elapsed(tiSpecialFireCooldown)))
@@ -335,17 +335,6 @@ namespace Template.Game
                 if (tiSpecialFireCooldown == null)
                     GM.eventM.AddTimer(tiSpecialFireCooldown = new Event(10f, "Special Fire Cooldown"));
             }
-
-            ////Missiles
-            //if (GM.inputM.MouseRightButtonHeld() && (tiAltFireCooldown == null || GM.eventM.Elapsed(tiAltFireCooldown)))
-            //{
-            //    Vector2 dir = new Vector2(RotationHelper.MyDirection(this, 0).X, RotationHelper.MyDirection(this, 0).Y);
-            //    //Find target based on cursor placement
-            //    new Missile(Position2D + (24 * dir), dir, this, this, 750, 200, 20, 50);
-
-            //    if(tiAltFireCooldown == null)
-            //        GM.eventM.AddTimer(tiAltFireCooldown = new Event(1, "Alternate Fire Cooldown"));
-            //}
 
             //For boosting
             if (GM.inputM.KeyPressed(Boost) && (tiBoostDelay == null || GM.eventM.Elapsed(tiBoostDelay)) && d != Vector3.Zero)
@@ -383,33 +372,42 @@ namespace Template.Game
                 {
                     if (s is Enemy)
                     {
-                        if(attack == null || Vector2.DistanceSquared(Centre2D, s.Centre2D) < bestDistance)
+                        if(attack == null || Vector2.DistanceSquared(aimPos, s.Centre2D) < bestDistance)
                         {
                             attack = s;
-                            bestDistance = Vector2.DistanceSquared(Centre2D, s.Centre2D);
+                            bestDistance = Vector2.DistanceSquared(aimPos, s.Centre2D);
                         }
                     }
+                }
+                if(attack != null)
+                {
+                    lockSprite.Position2D = attack.Position2D;
                 }
             }
 
             if (GM.inputM.MouseRightButtonHeld() && GM.eventM.Elapsed(tiLockingDelay) && attack != null)
             {
+                GM.eventM.AddEventRaiseOnce(beepCountDown = new Event(0.25f, "Beep Countdown"));
+                float graphicsLockAmount = lockAmount / 4;
                 Color color = new Color();
                 if (lockAmount < 1)
                 {
-                    lockAmount += tiLockingDelay.Interval;
-                    lockSprite.RotationAngle = 360 * lockAmount;
-                    //lockSprite.Wash = new Color(255, 255, 255);
-                    
+                    lockAmount += tiLockingDelay.Interval * 4;
+                    lockSprite.RotationAngle = 360 * graphicsLockAmount;
+                    color.R = (byte)(250 * lockAmount);
+                    color.B = (byte)(255 - color.R);
                 }
                 else
                 {
                     lockSprite.RotationAngle = 0;
-                    //lockSprite.Wash = new Color(255, 0, 0);
+                    color.R = (byte)(255);
+                    color.B = (byte)(0);
                 }
+                if (GM.eventM.Elapsed(beepCountDown))
+                {
+                    //Beep sound effect
 
-                color.R = (byte)(255 * lockAmount);
-                color.B = (byte)(255 - color.B);
+                }
 
                 lockSprite.Position2D = attack.Position2D;
                 lockSprite.ScaleBoth = 1.5f + (1 - lockAmount);

@@ -44,18 +44,7 @@ namespace Template
             RotationHelper.FacePosition(this, GameSetup.PlayerChar.Position, DirectionAccuracy.free, 0, false);
             RotationHelper.VelocityInCurrentDirection(this, 400, 0);
         }
-
-        /// <summary>
-        /// For now this is unneeded
-        /// </summary>
-        /// <param name="hit"></param>
-        //private void Stop(Sprite hit)
-        //{
-        //    //stop if hit wall
-        //    if (hit is wall)
-        //        Velocity = Vector3.Zero;
-        //}
-
+        
         private void Hit(Sprite hit)
         {
             //Damage player upon hit
@@ -67,6 +56,5 @@ namespace Template
                 GM.audioM.PlayEffect("explode");
             }
         }
-
     }
 }
